@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "f8W3mWK3yvD8kzp17wmXHjp7djMp2HNbGu8saJTTgc8R+lqfv9RHyPoRfgeH/rvnwRH/zMHz5QrC+KZZREmKWA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\jaftb\\Documents\\md_ppt\\md_ppt\\md_ppt.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\jaftb\\.nuget\\packages\\markdig\\0.30.4\\markdig.0.30.4.nupkg.sha512"
+  ],
+  "logs": []
+}

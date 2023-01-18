@@ -1,0 +1,54 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v7.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v7.0": {
+      "md_ppt/1.0.0": {
+        "dependencies": {
+          "ppt_lib": "1.0.0"
+        },
+        "runtime": {
+          "md_ppt.dll": {}
+        }
+      },
+      "Markdig/0.30.4": {
+        "runtime": {
+          "lib/net6.0/Markdig.dll": {
+            "assemblyVersion": "0.30.0.0",
+            "fileVersion": "0.30.4.0"
+          }
+        }
+      },
+      "ppt_lib/1.0.0": {
+        "dependencies": {
+          "Markdig": "0.30.4"
+        },
+        "runtime": {
+          "ppt_lib.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "md_ppt/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Markdig/0.30.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-9LL7Mzubwf6QmOTZIqf+vERiinqPA1H+irBA38POhr93W/it00AvFWaCtF80+8VJTooFmcAJyZT2f60t1f88eQ==",
+      "path": "markdig/0.30.4",
+      "hashPath": "markdig.0.30.4.nupkg.sha512"
+    },
+    "ppt_lib/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

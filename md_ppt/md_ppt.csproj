@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="test_results\.unzipped\word\document.xml" />
+    <Content Include="test_results\.unzipped\word\styles.xml" />
+    <Content Include="test_results\.unzipped\[Content_Types].xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="test_results\.unzipped\word\_rels\document.xml.rels" />
+    <None Include="test_results\.unzipped\_rels\.rels" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ppt_lib\ppt_lib.csproj" />
+  </ItemGroup>
+
+</Project>

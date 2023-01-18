@@ -1,0 +1,15 @@
+C:\Users\jaftb\Documents\md_ppt\md_ppt\bin\Debug\net6.0\md_ppt.exe
+C:\Users\jaftb\Documents\md_ppt\md_ppt\bin\Debug\net6.0\md_ppt.deps.json
+C:\Users\jaftb\Documents\md_ppt\md_ppt\bin\Debug\net6.0\md_ppt.runtimeconfig.json
+C:\Users\jaftb\Documents\md_ppt\md_ppt\bin\Debug\net6.0\md_ppt.dll
+C:\Users\jaftb\Documents\md_ppt\md_ppt\bin\Debug\net6.0\md_ppt.pdb
+C:\Users\jaftb\Documents\md_ppt\md_ppt\obj\Debug\net6.0\md_ppt.csproj.AssemblyReference.cache
+C:\Users\jaftb\Documents\md_ppt\md_ppt\obj\Debug\net6.0\md_ppt.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\jaftb\Documents\md_ppt\md_ppt\obj\Debug\net6.0\md_ppt.AssemblyInfoInputs.cache
+C:\Users\jaftb\Documents\md_ppt\md_ppt\obj\Debug\net6.0\md_ppt.AssemblyInfo.cs
+C:\Users\jaftb\Documents\md_ppt\md_ppt\obj\Debug\net6.0\md_ppt.csproj.CoreCompileInputs.cache
+C:\Users\jaftb\Documents\md_ppt\md_ppt\obj\Debug\net6.0\md_ppt.dll
+C:\Users\jaftb\Documents\md_ppt\md_ppt\obj\Debug\net6.0\refint\md_ppt.dll
+C:\Users\jaftb\Documents\md_ppt\md_ppt\obj\Debug\net6.0\md_ppt.pdb
+C:\Users\jaftb\Documents\md_ppt\md_ppt\obj\Debug\net6.0\md_ppt.genruntimeconfig.cache
+C:\Users\jaftb\Documents\md_ppt\md_ppt\obj\Debug\net6.0\ref\md_ppt.dll

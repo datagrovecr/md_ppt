@@ -1,0 +1,5 @@
+C:\Users\jaftb\Documents\md_ppt\ppt_lib\obj\Debug\net6.0\ppt_lib.csproj.AssemblyReference.cache
+C:\Users\jaftb\Documents\md_ppt\ppt_lib\obj\Debug\net6.0\ppt_lib.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\jaftb\Documents\md_ppt\ppt_lib\obj\Debug\net6.0\ppt_lib.AssemblyInfoInputs.cache
+C:\Users\jaftb\Documents\md_ppt\ppt_lib\obj\Debug\net6.0\ppt_lib.AssemblyInfo.cs
+C:\Users\jaftb\Documents\md_ppt\ppt_lib\obj\Debug\net6.0\ppt_lib.csproj.CoreCompileInputs.cache

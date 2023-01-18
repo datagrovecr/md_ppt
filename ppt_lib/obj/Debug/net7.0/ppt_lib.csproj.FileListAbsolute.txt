@@ -1,0 +1,12 @@
+C:\Users\jaftb\Documents\md_ppt\ppt_lib\bin\Debug\net7.0\ppt_lib.deps.json
+C:\Users\jaftb\Documents\md_ppt\ppt_lib\bin\Debug\net7.0\ppt_lib.dll
+C:\Users\jaftb\Documents\md_ppt\ppt_lib\bin\Debug\net7.0\ppt_lib.pdb
+C:\Users\jaftb\Documents\md_ppt\ppt_lib\obj\Debug\net7.0\ppt_lib.csproj.AssemblyReference.cache
+C:\Users\jaftb\Documents\md_ppt\ppt_lib\obj\Debug\net7.0\ppt_lib.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\jaftb\Documents\md_ppt\ppt_lib\obj\Debug\net7.0\ppt_lib.AssemblyInfoInputs.cache
+C:\Users\jaftb\Documents\md_ppt\ppt_lib\obj\Debug\net7.0\ppt_lib.AssemblyInfo.cs
+C:\Users\jaftb\Documents\md_ppt\ppt_lib\obj\Debug\net7.0\ppt_lib.csproj.CoreCompileInputs.cache
+C:\Users\jaftb\Documents\md_ppt\ppt_lib\obj\Debug\net7.0\ppt_lib.dll
+C:\Users\jaftb\Documents\md_ppt\ppt_lib\obj\Debug\net7.0\refint\ppt_lib.dll
+C:\Users\jaftb\Documents\md_ppt\ppt_lib\obj\Debug\net7.0\ppt_lib.pdb
+C:\Users\jaftb\Documents\md_ppt\ppt_lib\obj\Debug\net7.0\ref\ppt_lib.dll

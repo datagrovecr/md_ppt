@@ -1,0 +1,130 @@
+{
+  "version": 3,
+  "targets": {
+    "net7.0": {
+      "Markdig/0.30.4": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/Markdig.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/Markdig.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "ppt_lib/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v7.0",
+        "dependencies": {
+          "Markdig": "0.30.4"
+        },
+        "compile": {
+          "bin/placeholder/ppt_lib.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ppt_lib.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Markdig/0.30.4": {
+      "sha512": "9LL7Mzubwf6QmOTZIqf+vERiinqPA1H+irBA38POhr93W/it00AvFWaCtF80+8VJTooFmcAJyZT2f60t1f88eQ==",
+      "type": "package",
+      "path": "markdig/0.30.4",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net452/Markdig.dll",
+        "lib/net452/Markdig.xml",
+        "lib/net6.0/Markdig.dll",
+        "lib/net6.0/Markdig.xml",
+        "lib/netcoreapp3.1/Markdig.dll",
+        "lib/netcoreapp3.1/Markdig.xml",
+        "lib/netstandard2.0/Markdig.dll",
+        "lib/netstandard2.0/Markdig.xml",
+        "lib/netstandard2.1/Markdig.dll",
+        "lib/netstandard2.1/Markdig.xml",
+        "markdig.0.30.4.nupkg.sha512",
+        "markdig.nuspec",
+        "markdig.png",
+        "readme.md"
+      ]
+    },
+    "ppt_lib/1.0.0": {
+      "type": "project",
+      "path": "../ppt_lib/ppt_lib.csproj",
+      "msbuildProject": "../ppt_lib/ppt_lib.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    "net7.0": [
+      "ppt_lib >= 1.0.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\jaftb\\.nuget\\packages\\": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "C:\\Users\\jaftb\\Documents\\md_ppt\\md_ppt\\md_ppt.csproj",
+      "projectName": "md_ppt",
+      "projectPath": "C:\\Users\\jaftb\\Documents\\md_ppt\\md_ppt\\md_ppt.csproj",
+      "packagesPath": "C:\\Users\\jaftb\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\jaftb\\Documents\\md_ppt\\md_ppt\\obj\\",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "C:\\Users\\jaftb\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "net7.0"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "projectReferences": {
+            "C:\\Users\\jaftb\\Documents\\md_ppt\\ppt_lib\\ppt_lib.csproj": {
+              "projectPath": "C:\\Users\\jaftb\\Documents\\md_ppt\\ppt_lib\\ppt_lib.csproj"
+            }
+          }
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "net7.0": {
+        "targetAlias": "net7.0",
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48",
+          "net481"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.101\\RuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}
