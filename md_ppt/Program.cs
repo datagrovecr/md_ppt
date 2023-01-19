@@ -36,7 +36,7 @@ internal class Program
                     
                 }*/
 
-                using (ZipArchive archive = ZipFile.OpenRead(outdir + "test.docx"))
+                using (ZipArchive archive = ZipFile.OpenRead(outdir + "test.txt"))
                 {
                     archive.ExtractToDirectory(outdir + "test.unzipped", true);
                 }

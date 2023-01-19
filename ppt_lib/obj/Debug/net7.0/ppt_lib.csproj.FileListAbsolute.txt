@@ -10,3 +10,6 @@ C:\Users\jaftb\Documents\md_ppt\ppt_lib\obj\Debug\net7.0\ppt_lib.dll
 C:\Users\jaftb\Documents\md_ppt\ppt_lib\obj\Debug\net7.0\refint\ppt_lib.dll
 C:\Users\jaftb\Documents\md_ppt\ppt_lib\obj\Debug\net7.0\ppt_lib.pdb
 C:\Users\jaftb\Documents\md_ppt\ppt_lib\obj\Debug\net7.0\ref\ppt_lib.dll
+C:\Users\jaftb\Documents\md_ppt\ppt_lib\bin\Debug\net7.0\HtmlToOpenXml.dll
+C:\Users\jaftb\Documents\md_ppt\ppt_lib\bin\Debug\net7.0\HtmlToOpenXml.xml
+C:\Users\jaftb\Documents\md_ppt\ppt_lib\obj\Debug\net7.0\ppt_lib.csproj.CopyComplete

@@ -11,4 +11,8 @@
 		<PackageReference Include="Markdig" Version="0.30.4" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\Html2OpenXml\HtmlToOpenXml.csproj" />
+	</ItemGroup>
+
 </Project>

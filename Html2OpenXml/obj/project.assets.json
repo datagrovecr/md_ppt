@@ -1,63 +1,7 @@
 {
   "version": 3,
   "targets": {
-    ".NETFramework,Version=v4.6": {
-      "DocumentFormat.OpenXml/2.19.0": {
-        "type": "package",
-        "frameworkAssemblies": [
-          "System",
-          "System.Xml",
-          "WindowsBase"
-        ],
-        "compile": {
-          "lib/net46/DocumentFormat.OpenXml.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net46/DocumentFormat.OpenXml.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "Microsoft.Build.Tasks.Git/1.1.1": {
-        "type": "package",
-        "build": {
-          "build/Microsoft.Build.Tasks.Git.props": {},
-          "build/Microsoft.Build.Tasks.Git.targets": {}
-        },
-        "buildMultiTargeting": {
-          "buildMultiTargeting/Microsoft.Build.Tasks.Git.props": {},
-          "buildMultiTargeting/Microsoft.Build.Tasks.Git.targets": {}
-        }
-      },
-      "Microsoft.SourceLink.Common/1.1.1": {
-        "type": "package",
-        "build": {
-          "build/Microsoft.SourceLink.Common.props": {},
-          "build/Microsoft.SourceLink.Common.targets": {}
-        },
-        "buildMultiTargeting": {
-          "buildMultiTargeting/Microsoft.SourceLink.Common.props": {},
-          "buildMultiTargeting/Microsoft.SourceLink.Common.targets": {}
-        }
-      },
-      "Microsoft.SourceLink.GitHub/1.1.1": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Build.Tasks.Git": "1.1.1",
-          "Microsoft.SourceLink.Common": "1.1.1"
-        },
-        "build": {
-          "build/Microsoft.SourceLink.GitHub.props": {},
-          "build/Microsoft.SourceLink.GitHub.targets": {}
-        },
-        "buildMultiTargeting": {
-          "buildMultiTargeting/Microsoft.SourceLink.GitHub.props": {},
-          "buildMultiTargeting/Microsoft.SourceLink.GitHub.targets": {}
-        }
-      }
-    },
+    ".NETFramework,Version=v4.6": {},
     ".NETStandard,Version=v1.3": {
       "DocumentFormat.OpenXml/2.19.0": {
         "type": "package",
@@ -4715,10 +4659,7 @@
     }
   },
   "projectFileDependencyGroups": {
-    ".NETFramework,Version=v4.6": [
-      "DocumentFormat.OpenXml >= 2.19.0",
-      "Microsoft.SourceLink.GitHub >= 1.1.1"
-    ],
+    ".NETFramework,Version=v4.6": [],
     ".NETStandard,Version=v1.3": [
       "DocumentFormat.OpenXml >= 2.19.0",
       "Microsoft.SourceLink.GitHub >= 1.1.1",
@@ -4782,17 +4723,6 @@
     "frameworks": {
       "net46": {
         "targetAlias": "net46",
-        "dependencies": {
-          "DocumentFormat.OpenXml": {
-            "target": "Package",
-            "version": "[2.19.0, )"
-          },
-          "Microsoft.SourceLink.GitHub": {
-            "suppressParent": "All",
-            "target": "Package",
-            "version": "[1.1.1, )"
-          }
-        },
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.101\\RuntimeIdentifierGraph.json"
       },
       "netstandard1.3": {

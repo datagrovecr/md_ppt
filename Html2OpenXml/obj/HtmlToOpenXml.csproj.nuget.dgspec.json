@@ -50,17 +50,6 @@
       "frameworks": {
         "net46": {
           "targetAlias": "net46",
-          "dependencies": {
-            "DocumentFormat.OpenXml": {
-              "target": "Package",
-              "version": "[2.19.0, )"
-            },
-            "Microsoft.SourceLink.GitHub": {
-              "suppressParent": "All",
-              "target": "Package",
-              "version": "[1.1.1, )"
-            }
-          },
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.101\\RuntimeIdentifierGraph.json"
         },
         "netstandard1.3": {
