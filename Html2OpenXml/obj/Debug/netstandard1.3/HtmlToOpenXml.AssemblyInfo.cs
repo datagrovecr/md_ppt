@@ -16,7 +16,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCopyrightAttribute("Copyright 2009-2023 Olivier Nizet")]
 [assembly: System.Reflection.AssemblyDescriptionAttribute("A library to convert simple or advanced html to plain OpenXml document")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("2.3.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("2.3.0+50e0697dd826b8be0332e38bef939eceadd21285")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("2.3.0")]
 [assembly: System.Reflection.AssemblyProductAttribute("HtmlToOpenXml")]
 [assembly: System.Reflection.AssemblyTitleAttribute("HtmlToOpenXml")]
 [assembly: System.Reflection.AssemblyVersionAttribute("2.3.0.0")]

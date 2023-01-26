@@ -19,5 +19,3 @@ C:\Users\jaftb\Documents\md_ppt\md_ppt\obj\Debug\net7.0\md_ppt.genruntimeconfig.
 C:\Users\jaftb\Documents\md_ppt\md_ppt\obj\Debug\net7.0\ref\md_ppt.dll
 C:\Users\jaftb\Documents\md_ppt\md_ppt\bin\Debug\net7.0\DocumentFormat.OpenXml.dll
 C:\Users\jaftb\Documents\md_ppt\md_ppt\bin\Debug\net7.0\System.IO.Packaging.dll
-C:\Users\jaftb\Documents\md_ppt\md_ppt\bin\Debug\net7.0\HtmlToOpenXml.dll
-C:\Users\jaftb\Documents\md_ppt\md_ppt\bin\Debug\net7.0\HtmlToOpenXml.xml

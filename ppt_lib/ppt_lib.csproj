@@ -8,11 +8,8 @@
   </PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="DocumentFormat.OpenXml" Version="2.19.0" />
 		<PackageReference Include="Markdig" Version="0.30.4" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <ProjectReference Include="..\Html2OpenXml\HtmlToOpenXml.csproj" />
 	</ItemGroup>
 
 </Project>

@@ -14,29 +14,34 @@ internal class Program
             //Just getting the end route
             string fn = Path.GetFileNameWithoutExtension(mdFile);
             string root = outdir + fn.Replace("_md", "");
-            var docxFile = root + ".ppt";
+            var pptxFile = root + ".pptx";
             try
             {
+                #region write file
+
                 // markdown to docx
                 var md = File.ReadAllText(mdFile);
                 var inputStream = new MemoryStream();
-                await DgPpt.md_to_ppt(md, inputStream);
+                //await DgPpt.md_to_ppt(md, inputStream);
 
                 //inputStream is writing into the .docx file
-                File.WriteAllBytes(docxFile, inputStream.ToArray());
+                //File.WriteAllBytes(docxFile, inputStream.ToArray());
+                #endregion
 
+                #region PPT back to markdown
 
                 // convert the docx back to markdown.
-                
-                /*using (var instream = File.Open(docxFile, FileMode.Open))
+
+                using (var instream = File.Open(pptxFile, FileMode.Open))
                 {
                     var outstream = new MemoryStream();
-                    await DgDocx.docx_to_md(instream, outstream, root);//Previous: instream, outstream, fn.Replace("_md", "")
+                    await DgPpt.ppt_to_md(instream, outstream, root);//Previous: instream, outstream, fn.Replace("_md", "")
 
                     
-                }*/
+                }
+                #endregion
 
-                using (ZipArchive archive = ZipFile.OpenRead(outdir + "test.txt"))
+                using (ZipArchive archive = ZipFile.OpenRead(outdir + "test.pptx"))
                 {
                     archive.ExtractToDirectory(outdir + "test.unzipped", true);
                 }
