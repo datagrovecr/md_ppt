@@ -7,6 +7,8 @@ using DocumentFormat.OpenXml;
 using ppt_lib;
 using System.Text;
 using DocumentFormat.OpenXml.ExtendedProperties;
+using Markdig.Syntax;
+
 
 namespace Ppt_lib
 {
@@ -38,25 +40,33 @@ namespace Ppt_lib
             PresentationPart presPart= presDoc.PresentationPart;
             IEnumerable <SlideMasterPart> slideMasterPart = presPart.SlideMasterParts;
             IEnumerable<SlidePart> slidePart = presPart.SlideParts;
-            foreach (var item in slidePart)
-            {
-                //var result=item.Slide.Descendants<ShapeTree>();
-                //now iterate throuhhte sptree
-                //var asd = item.Slide<ShapeTree>();
-                foreach (var lines in item.Slide.Descendants<ShapeTree>().First())
-                {
-                    foreach(var shapes in lines.ChildElements)
-                    {
-                        //TextBody
-                        foreach (var para in shapes.Descendants<Paragraphs>())
-                        {
-                            Console.WriteLine("subiendo como espuma");
+            StringBuilder textBuilder = new StringBuilder();
 
-                        }
+            foreach (var slides in slidePart)
+            {
+                
+                foreach (var treeBranch in slides.Slide.Descendants<ShapeTree>().FirstOrDefault())
+                {
+                
+                    
+                  
+                    //DocumentFormat.OpenXml.Presentation.NonVisualGroupShapeProperties
+                    if (treeBranch is NonVisualGroupShapeProperties) { 
+                    
                     }
+                    //DocumentFormat.OpenXml.Presentation.GroupShapeProperties
+                    if (treeBranch is GroupShapeProperties) {
+                    
+                    }
+                    //DocumentFormat.OpenXml.Presentation.Shape
+                    if (treeBranch is Shape)
+                    {
+
+                        openXmlProcessing.ProcessParagraph((Shape)treeBranch, textBuilder);
+                    }
+
                 }
             }
-            StringBuilder textBuilder = new StringBuilder();
             //var parts = wordDoc.MainDocumentPart.Document.Descendants().FirstOrDefault();
             //StyleDefinitionsPart styleDefinitionsPart = wordDoc.MainDocumentPart.StyleDefinitionsPart;
             //if (parts != null)
@@ -82,7 +92,7 @@ namespace Ppt_lib
 
             //This code is replacing the below one because I need to check the .md file faster
             //writing the .md file in test_result folder
-            /*if (name != "")
+            if (name != "")
             {
                 using (var streamWriter = new StreamWriter(name + ".md"))
                 {
@@ -97,8 +107,9 @@ namespace Ppt_lib
                 String s = textBuilder.ToString();
                 writer.Write(s);
                 writer.Flush();
-            }*/
+            }
 
         }
+
     }
 }
