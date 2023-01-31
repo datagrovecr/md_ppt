@@ -37,20 +37,43 @@ namespace ppt_lib
                             //DocumentFormat.OpenXml.Drawing.ParagraphProperties
                             DocumentFormat.OpenXml.Drawing.ParagraphProperties paragraphProperties = item.Descendants<DocumentFormat.OpenXml.Drawing.ParagraphProperties>().FirstOrDefault();
                             //could contain 
-                        
 
-                            DocumentFormat.OpenXml.Drawing.Run run = item.Descendants<DocumentFormat.OpenXml.Drawing.Run>().FirstOrDefault();
+                            
+                            //DocumentFormat.OpenXml.Drawing.Run run = item.Descendants<DocumentFormat.OpenXml.Drawing.Run>().FirstOrDefault();
                             DocumentFormat.OpenXml.Drawing.RunProperties runProp = item.Descendants<DocumentFormat.OpenXml.Drawing.RunProperties>().FirstOrDefault();
                             
                             
 
-                            if (run?.InnerText==null) continue;
-
-                            text += run.InnerText??"";
-                            var fontSize = runProp?.FontSize ?? 0;
                             
+                            foreach (var run in item.Descendants<DocumentFormat.OpenXml.Drawing.Run>())
+                            {
+                                if (run?.InnerText == null) continue;
+                                DocumentFormat.OpenXml.Drawing.RunProperties props = run.RunProperties;
+
+                                if (props.Italic != null&& props.Bold != null)
+                                {
+                                    text += "***" + run.InnerText.Trim() + "*** " ?? "";
+                                }
+                               else if (props.Italic!= null)
+                                {
+                                    //run.InnerText[run.InnerText.Length - 1];
+                                    text += "*"+run.InnerText.Trim()+"* " ?? "";
+
+                                }else if (props.Bold != null)
+                                {
+                                    text += "**" + run.InnerText.Trim() + "** " ?? "";
+                                }
+                                else
+                                {
+                                    text += run.InnerText ?? "";
+                                }
+                                
+
+                            }
+                            var fontSize = runProp?.FontSize ?? 0;
+
                             //IS A HEADER?
-                            if (fontSize > 2500) 
+                            if (fontSize > 2500)
                             {
                                 text = processHeader(text, fontSize);
                             }
