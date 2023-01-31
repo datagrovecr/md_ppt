@@ -1,8 +1,7 @@
-## Ready to convert into PDF!##
-You can convert into PDF slide deck through Chrome.
-# Hello, Marpit!#
- Marpit is the skinny framework for creating slide deck from Markdown.
-* list item1.
-* list item2.
-* list item3.
-texto normal
+1  list item1.
+2  list item2.
+3  list item3.
+ 
+1  Eso
+2 No 
+3 Es

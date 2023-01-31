@@ -21,6 +21,7 @@ namespace ppt_lib
             {
                 if (element is TextBody)
                 {
+                    int orderedLits=1;
                     foreach (var item in element)
                     {
                         //DocumentFormat.OpenXml.Drawing.BodyProperties
@@ -52,8 +53,19 @@ namespace ppt_lib
                             if (fontSize > 2500) 
                             {
                                 text = processHeader(text, fontSize);
-
                             }
+
+                            //IS AUTONUMBERED LIST
+                            if (isAutoNum((DocumentFormat.OpenXml.Drawing.Paragraph)item))
+                            { 
+
+                                //if last one was  auto num AND this is auto num
+                                textBuilder.Append(orderedLits+" " + text + "\n");
+                                text = "";
+                                orderedLits++;
+                                continue;
+                            }
+                            orderedLits = 1;
                             //IS A BULLET LIST?
                             if (isBullet((DocumentFormat.OpenXml.Drawing.Paragraph)item))
                             {
@@ -80,6 +92,15 @@ namespace ppt_lib
             //DocumentFormat.OpenXml.Drawing.BulletSizePercentage
             //DocumentFormat.OpenXml.Drawing.CharacterBullet
             return paragraph.Descendants<DocumentFormat.OpenXml.Drawing.CharacterBullet>().Count() > 0;
+        }
+
+        private static bool isAutoNum(DocumentFormat.OpenXml.Drawing.Paragraph paragraph)
+        {
+            //THE EASIEST WAY TO CHECK IF A LINE IS A BULLET-LIST IS TO CHECK THE EXISTENCE OF THIS 2 PROPERTIES 
+            //INSIDE DocumentFormat.OpenXml.Drawing.ParagraphProperties SHOULD BE 
+            //DocumentFormat.OpenXml.Drawing.BulletSizePercentage
+            //DocumentFormat.OpenXml.Drawing.CharacterBullet
+            return paragraph.Descendants<DocumentFormat.OpenXml.Drawing.AutoNumberedBullet>().Count() > 0;
         }
 
         public static string processHeader(string text, int fontSize=0)
