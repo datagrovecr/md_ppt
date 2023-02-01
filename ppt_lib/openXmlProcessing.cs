@@ -13,98 +13,102 @@ namespace ppt_lib
 {
     internal class openXmlProcessing
     {
+        public static int  isInlineStile = 0;
 
         public static void ProcessParagraph(Shape treeBranch, StringBuilder textBuilder)
         {
             string text = "";
+            var isFullCodeBlock = false;
             foreach (var element in treeBranch)
             {
+              
+                if (element is DocumentFormat.OpenXml.Presentation.ShapeProperties)
+                {
+                    DocumentFormat.OpenXml.Drawing.SolidFill fill = element.Descendants<DocumentFormat.OpenXml.Drawing.SolidFill>().FirstOrDefault();
+                    if (fill!=null)
+                    {
+                        isFullCodeBlock = true;
+                    }
+                }
                 if (element is TextBody)
                 {
                     int orderedLits=1;
                     foreach (var item in element)
                     {
+                        
                         //DocumentFormat.OpenXml.Drawing.BodyProperties
-                        //DocumentFormat.OpenXml.Drawing.ListStyle
-                        if (item is DocumentFormat.OpenXml.Drawing.ListStyle)
-                        {
+                        if (item is DocumentFormat.OpenXml.Drawing.BodyProperties){}
 
-                        }
+                        //DocumentFormat.OpenXml.Drawing.ListStyle
+                        if (item is DocumentFormat.OpenXml.Drawing.ListStyle){}
+                        
+
+                       
                         //DocumentFormat.OpenXml.Drawing.Paragraph -this has the size 
                         //pull the run
                         if (item is DocumentFormat.OpenXml.Drawing.Paragraph)
                         {
                             //DocumentFormat.OpenXml.Drawing.ParagraphProperties
                             DocumentFormat.OpenXml.Drawing.ParagraphProperties paragraphProperties = item.Descendants<DocumentFormat.OpenXml.Drawing.ParagraphProperties>().FirstOrDefault();
-                            //could contain 
-
-                            
-                            //DocumentFormat.OpenXml.Drawing.Run run = item.Descendants<DocumentFormat.OpenXml.Drawing.Run>().FirstOrDefault();
                             DocumentFormat.OpenXml.Drawing.RunProperties runProp = item.Descendants<DocumentFormat.OpenXml.Drawing.RunProperties>().FirstOrDefault();
                             
-                            
-
                             
                             foreach (var run in item.Descendants<DocumentFormat.OpenXml.Drawing.Run>())
                             {
                                 if (run?.InnerText == null) continue;
                                 DocumentFormat.OpenXml.Drawing.RunProperties props = run.RunProperties;
+                                //apply bold & italic styles
+                                text += inlineStyle(run,props, textBuilder);
+                                
+                                //IS A HEADER?
+                                if (props.FontSize!=null &&props.FontSize > 2500) text = processHeader(text, props.FontSize);
 
-                                if (props.Italic != null&& props.Bold != null)
+
+                                //IS AUTONUMBERED LIST
+                                if (isAutoNum((DocumentFormat.OpenXml.Drawing.Paragraph)item))
                                 {
-                                    text += "***" + run.InnerText.Trim() + "*** " ?? "";
+
+                                    //if last one was  auto num AND this is auto num
+                                    textBuilder.Append(orderedLits + ". " + text + "\n");
+                                    text = "";
+                                    orderedLits++;
+                                    continue;
                                 }
-                               else if (props.Italic!= null)
-                                {
-                                    //run.InnerText[run.InnerText.Length - 1];
-                                    text += "*"+run.InnerText.Trim()+"* " ?? "";
+                                orderedLits = 1;
 
-                                }else if (props.Bold != null)
+                                //IS A BULLET LIST?
+                                if (isBullet((DocumentFormat.OpenXml.Drawing.Paragraph)item)) text="* " + text;
+
+                                if (isInlineStile>0)
                                 {
-                                    text += "**" + run.InnerText.Trim() + "** " ?? "";
+                                    textBuilder.Append(text + "");
                                 }
                                 else
                                 {
-                                    text += run.InnerText ?? "";
-                                }
-                                
+                                    textBuilder.Append(text + "\n");
 
+                                }
+                                text = "";
                             }
                             var fontSize = runProp?.FontSize ?? 0;
 
-                            //IS A HEADER?
-                            if (fontSize > 2500)
-                            {
-                                text = processHeader(text, fontSize);
-                            }
-
-                            //IS AUTONUMBERED LIST
-                            if (isAutoNum((DocumentFormat.OpenXml.Drawing.Paragraph)item))
-                            { 
-
-                                //if last one was  auto num AND this is auto num
-                                textBuilder.Append(orderedLits+" " + text + "\n");
-                                text = "";
-                                orderedLits++;
-                                continue;
-                            }
-                            orderedLits = 1;
-                            //IS A BULLET LIST?
-                            if (isBullet((DocumentFormat.OpenXml.Drawing.Paragraph)item))
-                            {
-                                textBuilder.Append("*"+text + "\n");
-                                text = "";
-                                continue;
-                            }
-
-                            textBuilder.Append(text + "\n");
-
                         }
-
+                         
 
                     }
                 }
+               
+                //WORKS BUT IT SHOUL BE BETTER
+                if (isFullCodeBlock && textBuilder.ToString()!="")
+                {
+                    string textCopy = textBuilder.ToString();
+                    textBuilder.Clear();
+                    textBuilder.Append("``` \n" + textCopy + "```\n");
+                }
+
             }
+            textBuilder.Append("\n");
+
 
         }
 
@@ -126,23 +130,55 @@ namespace ppt_lib
             return paragraph.Descendants<DocumentFormat.OpenXml.Drawing.AutoNumberedBullet>().Count() > 0;
         }
 
-        public static string processHeader(string text, int fontSize=0)
+        public static string inlineStyle(DocumentFormat.OpenXml.Drawing.Run run, DocumentFormat.OpenXml.Drawing.RunProperties props, StringBuilder stringBuilder)
+        {
+
+            if (props.Italic != null && props.Bold != null)
+            {
+                isInlineStile++;
+                return "***" + run.InnerText.Trim() + "*** " ?? "";
+            }
+            else if (props.Italic != null)
+            {
+                isInlineStile++;
+                return "*" + run.InnerText.Trim() + "* " ?? "";
+            }
+            else if (props.Bold != null)
+            {
+                isInlineStile++;
+                return "**" + run.InnerText.Trim() + "** " ?? "";
+            }
+            else
+            {
+                if (isInlineStile>0)
+                {
+                    //here ends a line
+                    isInlineStile = 0;
+                    stringBuilder.Append("\n");
+                }
+                return run.InnerText ?? "";
+            }
+
+         
+        }
+
+            public static string processHeader(string text, int fontSize=0)
         {
             
             switch (fontSize)
             {
                 case >= 5500:
-                    return "#" + text + "#";
+                    return "# " + text + "";
                 case >= 5000:
-                    return "##" + text + "##";
+                    return "## " + text + "";
                 case >= 4500:
-                    return "###" + text + "###";
+                    return "### " + text + "";
                 case >= 4000:
-                    return "####" + text + "####";
+                    return "#### " + text + "";
                 case >= 3500:
-                    return "#####" + text + "#####";
+                    return "##### " + text + "";
                 case >= 3000:
-                    return "######" + text + "######";
+                    return "###### " + text + "";
                 default:
                     return text;
             }
