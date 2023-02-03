@@ -1,14 +1,14 @@
-``` 
-**TEXT** *lines1* 
-* line2
-###### Line3
-1. Line4
-2. line5s
-```
+Text `code`  interesante
+Pero hay que ver
 
-* CAP
-* CAP2
-1. CAP
-2. CAP
-3. CAP
+* LINEA INTERESANTE 1
+* ###### LINEA INTERESANTE 2
+* LINEA INTERESANTE 3
+
+``` 
+Text code interesante
+Pero **hay** ***que***  ver
+     Aasdasdasda
+asda
+``` 
 
