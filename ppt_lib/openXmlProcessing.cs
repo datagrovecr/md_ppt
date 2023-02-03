@@ -68,7 +68,7 @@ namespace ppt_lib
                                     if (run?.InnerText == null) continue;
                                     DocumentFormat.OpenXml.Drawing.RunProperties props = run.RunProperties;
                                     //apply bold & italic styles
-                                    text += inlineStyle(run, props, textBuilder);
+                                    text += inlineStyle(run, props);
 
                                     //IS A HEADER?
                                     if (props.FontSize != null && props.FontSize > 2500) text = processHeader(text, props.FontSize);
@@ -89,23 +89,27 @@ namespace ppt_lib
                                     //IS A BULLET LIST?
                                     if (isBullet((DocumentFormat.OpenXml.Drawing.Paragraph)item)) text = "* " + text+"\n";
 
-                                    if (isInlineStile > 0)
-                                    {
-                                        textBuilder.Append(text + "");
-                                    }
-                                    else
-                                    {
+                                    
+                                    
                                         //textBuilder.Append(text + "\n");
                                         textBuilder.Append(text + "");
 
-                                    }
+                                    
                                     text = "";
                                 }
 
 
                             }
-
-                       
+                            if (paragraphProperties != null)
+                            {
+                                if (paragraphProperties.Level > 0)
+                                {
+                                    text = textBuilder.ToString();
+                                    textBuilder.Clear();
+                                    textBuilder.Append("> " + text + "");
+                                }
+                            }
+                            
 
                             //why is this variable declaration here?
                             //Answer: I don't know but if you erase it probably colapse 
@@ -146,7 +150,7 @@ namespace ppt_lib
             return paragraph.Descendants<DocumentFormat.OpenXml.Drawing.AutoNumberedBullet>().Count() > 0;
         }
 
-        public static string inlineStyle(DocumentFormat.OpenXml.Drawing.Run run, DocumentFormat.OpenXml.Drawing.RunProperties props, StringBuilder stringBuilder)
+        public static string inlineStyle(DocumentFormat.OpenXml.Drawing.Run run, DocumentFormat.OpenXml.Drawing.RunProperties props)
         {
             if (run.InnerText==" "|| run.InnerText == "")
             {
@@ -156,16 +160,22 @@ namespace ppt_lib
             if (props.Italic != null && props.Bold != null)
             {
                 isInlineStile++;
+                string txt = run.InnerText;
+                //return "***" + txt+ "***" ?? "";
                 return "***" + run.InnerText.Trim() + "*** " ?? "";
             }
             else if (props.Italic != null)
             {
                 isInlineStile++;
+                string txt = run.InnerText;
+                //return "*" +txt+ "*" ?? "";
                 return "*" + run.InnerText.Trim() + "* " ?? "";
             }
             else if (props.Bold != null)
             {
                 isInlineStile++;
+                string txt = run.InnerText;
+                //return "**" + txt + "**" ?? "";
                 return "**" + run.InnerText.Trim() + "** " ?? "";
             }
             else if (props.Descendants<DocumentFormat.OpenXml.Drawing.Highlight>().Count()>0)
@@ -173,6 +183,7 @@ namespace ppt_lib
                 isInlineStile++;
                 return "`" + run.InnerText.Trim() + "` " ?? "";
             }
+          
             else
             {
                 if (isInlineStile>0)
@@ -187,7 +198,7 @@ namespace ppt_lib
          
         }
 
-            public static string processHeader(string text, int fontSize=0)
+        public static string processHeader(string text, int fontSize=0)
         {
             
             switch (fontSize)
