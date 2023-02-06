@@ -42,14 +42,21 @@ namespace Ppt_lib
             IEnumerable<SlidePart> slidePart = presPart.SlideParts;
             StringBuilder textBuilder = new StringBuilder();
 
+           
+
             foreach (var slides in slidePart)
             {
-                
+                //DocumentFormat.OpenXml.Packaging.HyperlinkRelationship
+
+
+
+
                 foreach (var treeBranch in slides.Slide.Descendants<ShapeTree>().FirstOrDefault())
                 {
-                
-                    
+
+
                   
+
                     //DocumentFormat.OpenXml.Presentation.NonVisualGroupShapeProperties
                     if (treeBranch is NonVisualGroupShapeProperties) { 
                     
@@ -62,7 +69,7 @@ namespace Ppt_lib
                     if (treeBranch is Shape)
                     {
 
-                        openXmlProcessing. ProcessParagraph((Shape)treeBranch, textBuilder);
+                        openXmlProcessing. ProcessParagraph((Shape)treeBranch, textBuilder,slides);
                     }
 
                 }

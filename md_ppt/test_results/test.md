@@ -1,4 +1,2 @@
-> ***Harry is constructed as the antithesis of Voldemort and is bound to him in numerous ways: the lightning-bolt scar on his forehead is the most obvious, as are Harry’s ability to speak*** ***Parseltongue*** ***and his wand, which is an exact counterpart of Voldemort’s. Like Frodo*** 
+[Cubriendo](https://en.wikipedia.org/wiki/Main_Page)         [camino](https://dillinger.io/)     [acido](https://www.example.com/my%20great%20page)
 
-ASDASDSSS **ASDAS** *DASDASDASDAD*       
-ASDASDSSSS SDASD SADASD

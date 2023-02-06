@@ -8,16 +8,21 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.ExtendedProperties;
 using System.Linq.Expressions;
+using Markdig.Syntax;
 
 namespace ppt_lib
 {
     internal class openXmlProcessing
     {
         public static int isInlineStile = 0;
-        public static void ProcessParagraph(Shape treeBranch, StringBuilder textBuilder)
+        public static IEnumerable<HyperlinkRelationship> links = null;
+        public static void ProcessParagraph(Shape treeBranch, StringBuilder textBuilder,DocumentFormat.OpenXml.Packaging.SlidePart slides)
         {
+            //http://schemas.openxmlformats.org/officeDocument/2006/relationships
+            links = slides.HyperlinkRelationships;
+         
             string text = "";
-            bool isFullCodeBlock = false;
+             bool isFullCodeBlock = false;
             foreach (var element in treeBranch)
             {
               
@@ -155,6 +160,26 @@ namespace ppt_lib
             if (run.InnerText==" "|| run.InnerText == "")
             {
                 return run.InnerText;
+            }
+            
+            
+            if(props.Descendants<DocumentFormat.OpenXml.Drawing.HyperlinkOnClick>().Count() > 0) {
+
+
+                foreach (var taglinkref in props.Descendants<DocumentFormat.OpenXml.Drawing.HyperlinkOnClick>())
+                {
+                    //"rId2
+                    foreach (var link in links)
+                    {
+                        if (taglinkref.Id==link.Id)
+                        {
+                            return "[" + run.InnerText.Trim() + "](" +link.Uri.AbsoluteUri+ ")" ?? "";
+
+                        }
+                    }
+                }
+
+
             }
 
             if (props.Italic != null && props.Bold != null)
