@@ -12,6 +12,7 @@ using Markdig.Syntax;
 
 namespace Ppt_lib
 {
+   
     public class DgPpt
     {
 
@@ -24,55 +25,64 @@ namespace Ppt_lib
             {
                 PresentationPart presentationPart = presentationDocument.AddPresentationPart();
                 presentationPart.Presentation = new Presentation();
-                
+
                 CreatePresentationDocument.CreatePresentationParts(presentationPart);
 
 
                 //HtmlConverter converter = new HtmlConverter(presentationDocument);
                 //converter.ParseHtml(html);
-                presentationDocument .Save();
+                presentationDocument.Save();
             }
         }
 
         public async static Task ppt_to_md(Stream infile, Stream outfile, String name = "")
         {
             PresentationDocument presDoc = PresentationDocument.Open(infile, false);
-            PresentationPart presPart= presDoc.PresentationPart;
-            IEnumerable <SlideMasterPart> slideMasterPart = presPart.SlideMasterParts;
+            PresentationPart presPart = presDoc.PresentationPart;
+            IEnumerable<SlideMasterPart> slideMasterPart = presPart.SlideMasterParts;
             IEnumerable<SlidePart> slidePart = presPart.SlideParts;
             StringBuilder textBuilder = new StringBuilder();
             List<string> uri = new List<string>();
-           
+
+            
 
             foreach (var slides in slidePart)
             {
 
-                foreach (var media in slides.ImageParts)
-                {
-                   uri.Add( media.Uri.OriginalString);
-                   
-                }
+               
+
+                //foreach (var treeBranch in slides.Slide.Descendants<ShapeTree>().FirstOrDefault())
                 foreach (var treeBranch in slides.Slide.Descendants<ShapeTree>().FirstOrDefault())
                 {
-
-
-                    //DocumentFormat.OpenXml.Presentation.NonVisualGroupShapeProperties
-                    if (treeBranch is NonVisualGroupShapeProperties) { 
-                    
-                    }
-                    //DocumentFormat.OpenXml.Presentation.GroupShapeProperties
-                    if (treeBranch is GroupShapeProperties) {
-                    
-                    }
-                    //DocumentFormat.OpenXml.Presentation.Shape
-                    if (treeBranch is Shape)
+                    if (treeBranch is DocumentFormat.OpenXml.Presentation.Picture)
                     {
-                        openXmlProcessing. ProcessParagraph((Shape)treeBranch, textBuilder,slides);
+
+                        openXmlProcessing.ProcessPicture((DocumentFormat.OpenXml.Presentation.Picture)treeBranch, textBuilder, slides);
+                        textBuilder.Append("\n");
                     }
+
+                    
+
+                        //DocumentFormat.OpenXml.Presentation.NonVisualGroupShapeProperties
+                        if (treeBranch is NonVisualGroupShapeProperties)
+                        {
+
+                        }
+                        //DocumentFormat.OpenXml.Presentation.GroupShapeProperties
+                        if (treeBranch is GroupShapeProperties)
+                        {
+
+                        }
+                        //DocumentFormat.OpenXml.Presentation.Shape
+                        if (treeBranch is Shape)
+                        {
+                            openXmlProcessing.ProcessParagraph((Shape)treeBranch, textBuilder, slides);
+                        }
+                   
 
                 }
             }
-                //var asd = parts.Descendants<HyperlinkList>();
+            //var asd = parts.Descendants<HyperlinkList>();
 
 
 

@@ -8,7 +8,7 @@ internal class Program
     {
 
         var outdir = @"./../../../../md_ppt/test_results/";
-        var outdirMedia = @"./../../../../md_ppt/test_results/results/media/";
+        var outdirMedia = @"./../../../../md_ppt/test_results/results/ppt/media/";
         string[] files = Directory.GetFiles(@"./../../../../md_ppt/folder_tests/", "*.md", SearchOption.TopDirectoryOnly);
 
         foreach (var mdFile in files)

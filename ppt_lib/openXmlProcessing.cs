@@ -9,6 +9,7 @@ using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.ExtendedProperties;
 using System.Linq.Expressions;
 using Markdig.Syntax;
+using DocumentFormat.OpenXml.Office2010.PowerPoint;
 
 namespace ppt_lib
 {
@@ -18,7 +19,6 @@ namespace ppt_lib
         public static IEnumerable<HyperlinkRelationship> links = null;
         public static void ProcessParagraph(Shape treeBranch, StringBuilder textBuilder,DocumentFormat.OpenXml.Packaging.SlidePart slides)
         {
-            //http://schemas.openxmlformats.org/officeDocument/2006/relationships
             links = slides.HyperlinkRelationships;
          
             string text = "";
@@ -244,5 +244,39 @@ namespace ppt_lib
             }
         }
 
+        public static void ProcessPicture(DocumentFormat.OpenXml.Presentation.Picture picture, StringBuilder textBuilder, DocumentFormat.OpenXml.Packaging.SlidePart slides)
+        {
+            Dictionary<string, string> imagesDict = new();
+          
+            var mediaId = slides.Parts.ToArray();
+            var Urlparts = slides.ImageParts.ToArray();
+            for (int i = 0; i < mediaId.Length; i++)
+            {
+                string rls = mediaId[i].OpenXmlPart.RelationshipType;
+                if (rls == "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image")
+                {
+                   
+                    imagesDict.Add(mediaId[i].RelationshipId, Urlparts[i].Uri.OriginalString);
+
+                }
+
+            }
+
+         
+
+
+           //IEnumerable<DocumentFormat.OpenXml.Packaging.ImagePart> imagesLinks = slides.ImageParts;
+
+            DocumentFormat.OpenXml.Presentation.BlipFill blip = picture.Descendants<DocumentFormat.OpenXml.Presentation.BlipFill>().FirstOrDefault();
+          
+            textBuilder.Append("![" + picture.InnerText + "](" + imagesDict[blip.Blip.Embed.ToString()] + ")");
+
+            /*foreach (var MDTAG in imagesDict )
+            {
+
+            }*/
+
+           
+        }
     }
 }
