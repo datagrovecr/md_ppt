@@ -41,21 +41,20 @@ namespace Ppt_lib
             IEnumerable <SlideMasterPart> slideMasterPart = presPart.SlideMasterParts;
             IEnumerable<SlidePart> slidePart = presPart.SlideParts;
             StringBuilder textBuilder = new StringBuilder();
-
+            List<string> uri = new List<string>();
            
 
             foreach (var slides in slidePart)
             {
-                //DocumentFormat.OpenXml.Packaging.HyperlinkRelationship
 
-
-
-
+                foreach (var media in slides.ImageParts)
+                {
+                   uri.Add( media.Uri.OriginalString);
+                   
+                }
                 foreach (var treeBranch in slides.Slide.Descendants<ShapeTree>().FirstOrDefault())
                 {
 
-
-                  
 
                     //DocumentFormat.OpenXml.Presentation.NonVisualGroupShapeProperties
                     if (treeBranch is NonVisualGroupShapeProperties) { 
@@ -68,34 +67,14 @@ namespace Ppt_lib
                     //DocumentFormat.OpenXml.Presentation.Shape
                     if (treeBranch is Shape)
                     {
-
                         openXmlProcessing. ProcessParagraph((Shape)treeBranch, textBuilder,slides);
                     }
 
                 }
             }
-            //var parts = wordDoc.MainDocumentPart.Document.Descendants().FirstOrDefault();
-            //StyleDefinitionsPart styleDefinitionsPart = wordDoc.MainDocumentPart.StyleDefinitionsPart;
-            //if (parts != null)
-            //{
                 //var asd = parts.Descendants<HyperlinkList>();
 
 
-                /*foreach (var block in parts.ChildElements)
-                {
-
-
-                    if (block is Paragraph)
-                    {
-                        //This method is for manipulating the style of Paragraphs and text inside
-                        ProcessParagraph((Paragraph)block, textBuilder);
-                    }
-
-                    if (block is Table) ProcessTable((Table)block, textBuilder);
-
-                }*/
-
-            //}
 
             //This code is replacing the below one because I need to check the .md file faster
             //writing the .md file in test_result folder

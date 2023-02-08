@@ -1,4 +1,5 @@
-﻿using System.IO.Compression;
+﻿using System.IO;
+using System.IO.Compression;
 using Ppt_lib;
 
 internal class Program
@@ -7,6 +8,7 @@ internal class Program
     {
 
         var outdir = @"./../../../../md_ppt/test_results/";
+        var outdirMedia = @"./../../../../md_ppt/test_results/results/media/";
         string[] files = Directory.GetFiles(@"./../../../../md_ppt/folder_tests/", "*.md", SearchOption.TopDirectoryOnly);
 
         foreach (var mdFile in files)
@@ -14,6 +16,7 @@ internal class Program
             //Just getting the end route
             string fn = Path.GetFileNameWithoutExtension(mdFile);
             string root = outdir + fn.Replace("_md", "");
+            string rootResult = outdir + "results/"+fn.Replace("_md", "");
             var pptxFile = root + ".pptx";
             try
             {
@@ -34,16 +37,41 @@ internal class Program
 
                 using (var instream = File.Open(pptxFile, FileMode.Open))
                 {
+                    Directory.CreateDirectory(outdirMedia);
+                    Directory.CreateDirectory(rootResult);
                     var outstream = new MemoryStream();
-                    await DgPpt.ppt_to_md(instream, outstream, root);//Previous: instream, outstream, fn.Replace("_md", "")
+                    await DgPpt.ppt_to_md(instream, outstream, rootResult);
 
-                    
+                    //pull the images from "ppt/media"
+                    using (ZipArchive archive = new ZipArchive(instream ,ZipArchiveMode.Update, true))
+                    {
+                        string subDirectory = "ppt/media";
+                        // Loop through each entry in the zip file
+                        foreach (ZipArchiveEntry entry in archive.Entries)
+                        {
+                            // Check if the entry is a directory and its name matches the specified subdirectory
+                            if (entry.FullName.Contains(subDirectory) && !entry.Name.EndsWith("/"))
+                            {
+                                
+                                // Extract the entry to the specified extract path
+                                entry.ExtractToFile(outdirMedia + entry.Name, true);
+
+
+
+                            }
+                        }
+
+                    }
+
                 }
                 #endregion
 
                 using (ZipArchive archive = ZipFile.OpenRead(outdir + "test.pptx"))
                 {
+                    
+
                     archive.ExtractToDirectory(outdir + "test.unzipped", true);
+
                 }
             }
             catch (Exception e)

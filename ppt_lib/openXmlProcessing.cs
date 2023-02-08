@@ -168,7 +168,6 @@ namespace ppt_lib
 
                 foreach (var taglinkref in props.Descendants<DocumentFormat.OpenXml.Drawing.HyperlinkOnClick>())
                 {
-                    //"rId2
                     foreach (var link in links)
                     {
                         if (taglinkref.Id==link.Id)
