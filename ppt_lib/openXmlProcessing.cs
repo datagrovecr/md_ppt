@@ -172,7 +172,7 @@ namespace ppt_lib
                     {
                         if (taglinkref.Id==link.Id)
                         {
-                            return "[" + run.InnerText.Trim() + "](" +link.Uri.AbsoluteUri+ ")" ?? "";
+                            return "[" + ProcessEscapeCharacters(run.InnerText.Trim()) + "](" +link.Uri.AbsoluteUri+ ")" ?? "";
 
                         }
                     }
@@ -181,31 +181,27 @@ namespace ppt_lib
 
             }
 
+            string txt= run.InnerText.Trim();
             if (props.Italic != null && props.Bold != null)
             {
                 isInlineStile++;
-                string txt = run.InnerText;
-                //return "***" + txt+ "***" ?? "";
-                return "***" + run.InnerText.Trim() + "*** " ?? "";
+                return "***" + ProcessEscapeCharacters(txt) + "*** " ?? "";
             }
             else if (props.Italic != null)
             {
                 isInlineStile++;
-                string txt = run.InnerText;
-                //return "*" +txt+ "*" ?? "";
-                return "*" + run.InnerText.Trim() + "* " ?? "";
+                return "*" + ProcessEscapeCharacters(txt) + "* " ?? "";
             }
             else if (props.Bold != null)
             {
                 isInlineStile++;
-                string txt = run.InnerText;
                 //return "**" + txt + "**" ?? "";
-                return "**" + run.InnerText.Trim() + "** " ?? "";
+                return "**" + ProcessEscapeCharacters(txt) + "** " ?? "";
             }
             else if (props.Descendants<DocumentFormat.OpenXml.Drawing.Highlight>().Count()>0)
             {
                 isInlineStile++;
-                return "`" + run.InnerText.Trim() + "` " ?? "";
+                return "`" + ProcessEscapeCharacters(txt) + "` " ?? "";
             }
           
             else
@@ -216,7 +212,7 @@ namespace ppt_lib
                     isInlineStile = 0;
                     //stringBuilder.Append("\n");
                 }
-                return run.InnerText ?? "";
+                return ProcessEscapeCharacters(run.InnerText) ?? "";
             }
 
          
@@ -244,6 +240,71 @@ namespace ppt_lib
             }
         }
 
+
+        public static string ProcessEscapeCharacters(string input)
+        {
+            string result = "";
+            for (int i = 0; i < input.Length; i++)
+            {
+                switch (input[i])
+                {
+                    case '\\':
+                        result += '\\';
+                        break;
+                    case '`':
+                        result += "\\`";
+                        break;
+                    case '-':
+                        result += "\\-";
+                        break;
+                    case '_':
+                        result += "\\_";
+                        break;
+                    case '*':
+                        result += "\\*";
+                        break;
+                    case '{':
+                        result += "\\{";
+                        break;
+                    case '}':
+                        result += "\\}";
+                        break;
+                    case '[':
+                        result += "\\[";
+                        break;
+                    case ']':
+                        result += "\\]";
+                        break;
+                    case '<':
+                        result += "\\<";
+                        break;
+                    case '>':
+                        result += "\\>";
+                        break;
+                    case '(':
+                        result += "\\(";
+                        break;
+                    case ')':
+                        result += "\\)";
+                        break;
+                    case '#':
+                        result += "\\#";
+                        break;
+                    case '+':
+                        result += "\\+";
+                        break;
+                    case '!':
+                        result += "\\!";
+                        break;
+                    default:
+
+                        result += input[i];
+                        break;
+                }
+            }
+            return result;
+        }
+
         public static void ProcessPicture(DocumentFormat.OpenXml.Presentation.Picture picture, StringBuilder textBuilder, DocumentFormat.OpenXml.Packaging.SlidePart slides)
         {
             Dictionary<string, string> imagesDict = new();
@@ -261,22 +322,10 @@ namespace ppt_lib
                 }
 
             }
-
-         
-
-
-           //IEnumerable<DocumentFormat.OpenXml.Packaging.ImagePart> imagesLinks = slides.ImageParts;
-
             DocumentFormat.OpenXml.Presentation.BlipFill blip = picture.Descendants<DocumentFormat.OpenXml.Presentation.BlipFill>().FirstOrDefault();
           
             textBuilder.Append("![" + picture.InnerText + "](" + imagesDict[blip.Blip.Embed.ToString()] + ")");
 
-            /*foreach (var MDTAG in imagesDict )
-            {
-
-            }*/
-
-           
         }
     }
 }
