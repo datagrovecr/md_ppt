@@ -327,5 +327,41 @@ namespace ppt_lib
             textBuilder.Append("![" + picture.InnerText + "](" + imagesDict[blip.Blip.Embed.ToString()] + ")");
 
         }
+
+
+        public static string ProcessTable(DocumentFormat.OpenXml.Drawing.Table table)
+        {
+            string markdown = "";
+            // Add table header
+            markdown += "|";
+            foreach (DocumentFormat.OpenXml.Drawing.TableRow tableRow in table.Descendants<DocumentFormat.OpenXml.Drawing.TableRow>().Take(1))
+            {
+                foreach (DocumentFormat.OpenXml.Drawing.TableCell tableCell in tableRow.Descendants< DocumentFormat.OpenXml.Drawing.TableCell >())
+                {
+                    var text = tableCell.InnerText;
+                    markdown += text + "|";
+                }
+                markdown += "\n";
+                markdown += "|";
+                foreach (DocumentFormat.OpenXml.Drawing.TableCell tableCell in tableRow.Descendants<DocumentFormat.OpenXml.Drawing.TableCell>())
+                {
+                    markdown += "---|";
+                }
+                markdown += "\n";
+            }
+            // Add table rows
+            foreach (DocumentFormat.OpenXml.Drawing.TableRow tableRow in table.Descendants<DocumentFormat.OpenXml.Drawing.TableRow>().Skip(1))
+            {
+                markdown += "|";
+                foreach (DocumentFormat.OpenXml.Drawing.TableCell tableCell in tableRow.Descendants<DocumentFormat.OpenXml.Drawing.TableCell>())
+                {
+                    var text = tableCell.InnerText;
+                    markdown += text + "|";
+                }
+                markdown += "\n";
+            }
+            return markdown;
+        }
+
     }
 }

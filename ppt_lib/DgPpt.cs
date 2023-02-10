@@ -44,42 +44,47 @@ namespace Ppt_lib
             StringBuilder textBuilder = new StringBuilder();
             List<string> uri = new List<string>();
 
-            
+
 
             foreach (var slides in slidePart)
             {
 
-               
-
-                //foreach (var treeBranch in slides.Slide.Descendants<ShapeTree>().FirstOrDefault())
+                
                 foreach (var treeBranch in slides.Slide.Descendants<ShapeTree>().FirstOrDefault())
                 {
+
                     if (treeBranch is DocumentFormat.OpenXml.Presentation.Picture)
                     {
-
                         openXmlProcessing.ProcessPicture((DocumentFormat.OpenXml.Presentation.Picture)treeBranch, textBuilder, slides);
                         textBuilder.Append("\n");
                     }
 
-                    
+                    //DocumentFormat.OpenXml.Presentation.NonVisualGroupShapeProperties
+                    if (treeBranch is NonVisualGroupShapeProperties)
+                    {
 
-                        //DocumentFormat.OpenXml.Presentation.NonVisualGroupShapeProperties
-                        if (treeBranch is NonVisualGroupShapeProperties)
+                    }
+                    //DocumentFormat.OpenXml.Presentation.GroupShapeProperties
+                    if (treeBranch is GroupShapeProperties)
+                    {
+
+                    }
+                    //DocumentFormat.OpenXml.Presentation.Shape
+                    if (treeBranch is Shape)
+                    {
+                        openXmlProcessing.ProcessParagraph((Shape)treeBranch, textBuilder, slides);
+                    }
+                    //{ DocumentFormat.OpenXml.Presentation.GraphicFrame}
+                    if (treeBranch is DocumentFormat.OpenXml.Presentation.GraphicFrame)
+                    {
+                        //var tables = treeBranch.Descendants<DocumentFormat.OpenXml.Drawing.Table>();
+                        foreach (var tables in treeBranch.Descendants<DocumentFormat.OpenXml.Drawing.Table>())
                         {
-
+                           string result= openXmlProcessing.ProcessTable(tables);
+                           textBuilder.Append(result);
+                            textBuilder.Append("\n");
                         }
-                        //DocumentFormat.OpenXml.Presentation.GroupShapeProperties
-                        if (treeBranch is GroupShapeProperties)
-                        {
-
-                        }
-                        //DocumentFormat.OpenXml.Presentation.Shape
-                        if (treeBranch is Shape)
-                        {
-                            openXmlProcessing.ProcessParagraph((Shape)treeBranch, textBuilder, slides);
-                        }
-                   
-
+                    }
                 }
             }
             //var asd = parts.Descendants<HyperlinkList>();
