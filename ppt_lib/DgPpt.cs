@@ -74,7 +74,7 @@ namespace Ppt_lib
                     {
                         openXmlProcessing.ProcessParagraph((Shape)treeBranch, textBuilder, slides);
                     }
-                    //{ DocumentFormat.OpenXml.Presentation.GraphicFrame}
+                    //DocumentFormat.OpenXml.Presentation.GraphicFrame
                     if (treeBranch is DocumentFormat.OpenXml.Presentation.GraphicFrame)
                     {
                         //var tables = treeBranch.Descendants<DocumentFormat.OpenXml.Drawing.Table>();

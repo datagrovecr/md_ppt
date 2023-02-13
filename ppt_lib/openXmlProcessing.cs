@@ -157,6 +157,8 @@ namespace ppt_lib
 
         public static string inlineStyle(DocumentFormat.OpenXml.Drawing.Run run, DocumentFormat.OpenXml.Drawing.RunProperties props)
         {
+
+         
             if (run.InnerText==" "|| run.InnerText == "")
             {
                 return run.InnerText;
@@ -182,6 +184,22 @@ namespace ppt_lib
             }
 
             string txt= run.InnerText.Trim();
+
+            /* if (txt == "☑")
+             {
+                 return "[x] " ?? "";
+             }
+             if (txt == "☐")
+             {
+                 return "[ ] " ?? "";
+             }
+ */
+            //un-checkbox
+            if (txt == "☐")
+            {
+                return "[ ] " ?? "";
+            }
+
             if (props.Italic != null && props.Bold != null)
             {
                 isInlineStile++;
@@ -203,15 +221,9 @@ namespace ppt_lib
                 isInlineStile++;
                 return "`" + ProcessEscapeCharacters(txt) + "` " ?? "";
             }
-          
             else
             {
-                if (isInlineStile>0)
-                {
-                    //here ends a line
-                    isInlineStile = 0;
-                    //stringBuilder.Append("\n");
-                }
+               
                 return ProcessEscapeCharacters(run.InnerText) ?? "";
             }
 
@@ -243,11 +255,16 @@ namespace ppt_lib
 
         public static string ProcessEscapeCharacters(string input)
         {
+          
             string result = "";
             for (int i = 0; i < input.Length; i++)
             {
                 switch (input[i])
                 {
+                   
+                    case '☑':
+                        result += "[x]";
+                        break;
                     case '\\':
                         result += '\\';
                         break;
@@ -327,7 +344,6 @@ namespace ppt_lib
             textBuilder.Append("![" + picture.InnerText + "](" + imagesDict[blip.Blip.Embed.ToString()] + ")");
 
         }
-
 
         public static string ProcessTable(DocumentFormat.OpenXml.Drawing.Table table)
         {
