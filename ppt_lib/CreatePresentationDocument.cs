@@ -19,6 +19,7 @@ namespace ppt_lib
             SlideMasterIdList slideMasterIdList1 = new SlideMasterIdList(new SlideMasterId() { Id = (UInt32Value)2147483648U, RelationshipId = "rId1" });
             SlideIdList slideIdList1 = new SlideIdList(new SlideId() { Id = (UInt32Value)256U, RelationshipId = "rId2" });
             SlideSize slideSize1 = new SlideSize() { Cx = 9144000, Cy = 6858000, Type = SlideSizeValues.Screen4x3 };
+         
             NotesSize notesSize1 = new NotesSize() { Cx = 6858000, Cy = 9144000 };
             DefaultTextStyle defaultTextStyle1 = new DefaultTextStyle();
 
@@ -42,6 +43,7 @@ namespace ppt_lib
 
         public static SlidePart CreateSlidePart(PresentationPart presentationPart)
         {
+            // offset max 6400000 
             SlidePart slidePart1 = presentationPart.AddNewPart<SlidePart>("rId2");
             slidePart1.Slide = new Slide(
                     new CommonSlideData(
@@ -56,11 +58,21 @@ namespace ppt_lib
                                     new P.NonVisualDrawingProperties() { Id = (UInt32Value)2U, Name = "Title 1" },
                                     new P.NonVisualShapeDrawingProperties(new ShapeLocks() { NoGrouping = true }),
                                     new ApplicationNonVisualDrawingProperties(new PlaceholderShape())),
-                                new P.ShapeProperties(),
+                                new P.ShapeProperties()
+                                {
+
+                                    Transform2D = new Transform2D(
+                                         new Offset() { X = 0, Y = 6400000 },
+                                         new Extents() { Cx = 9144000, Cy = 457200 }
+                                         //new Extents() { Cx = 9144000, Cy = 457200 }
+                                         )
+                                },
                                 new P.TextBody(
                                     new BodyProperties(),
                                     new ListStyle(),
-                                    new Paragraph( new Run( new D.Text() { Text="WORKING"}),
+                                    new Paragraph(new Run(
+                                        new D.RunProperties() { Language = "en-US", Dirty = false, SpellingError = false,FontSize=4400 },
+                                        new D.Text() { Text = "WORKING" }),
                                         new EndParagraphRunProperties() { Language = "en-US" }
                                                  )
                                     )

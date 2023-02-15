@@ -157,15 +157,19 @@ namespace ppt_lib
 
         public static string inlineStyle(DocumentFormat.OpenXml.Drawing.Run run, DocumentFormat.OpenXml.Drawing.RunProperties props)
         {
+            if (props==null)
+            {
+                return run.InnerText;
 
-         
+            }
+
             if (run.InnerText==" "|| run.InnerText == "")
             {
                 return run.InnerText;
             }
             
             
-            if(props.Descendants<DocumentFormat.OpenXml.Drawing.HyperlinkOnClick>().Count() > 0) {
+            if(props.Descendants<DocumentFormat.OpenXml.Drawing.HyperlinkOnClick>()?.Count() > 0) {
 
 
                 foreach (var taglinkref in props.Descendants<DocumentFormat.OpenXml.Drawing.HyperlinkOnClick>())

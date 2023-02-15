@@ -25,17 +25,17 @@ internal class Program
                 // markdown to docx
                 var md = File.ReadAllText(mdFile);
                 var inputStream = new MemoryStream();
-                //await DgPpt.md_to_ppt(md, inputStream);
+                await DgPpt.md_to_ppt(md, inputStream);
 
                 //inputStream is writing into the .docx file
-                //File.WriteAllBytes(docxFile, inputStream.ToArray());
+                File.WriteAllBytes(pptxFile , inputStream.ToArray());
                 #endregion
 
                 #region PPT back to markdown
 
                 // convert the docx back to markdown.
 
-                using (var instream = File.Open(pptxFile, FileMode.Open))
+             /*   using (var instream = File.Open(pptxFile, FileMode.Open))
                 {
                     Directory.CreateDirectory(outdirMedia);
                     Directory.CreateDirectory(rootResult);
@@ -63,7 +63,7 @@ internal class Program
 
                     }
 
-                }
+                }*/
                 #endregion
 
                 using (ZipArchive archive = ZipFile.OpenRead(outdir + "test.pptx"))

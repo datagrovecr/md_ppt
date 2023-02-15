@@ -8,8 +8,8 @@ using ppt_lib;
 using System.Text;
 using DocumentFormat.OpenXml.ExtendedProperties;
 using Markdig.Syntax;
-
-
+using P = DocumentFormat.OpenXml.Presentation;
+using D = DocumentFormat.OpenXml.Drawing;
 namespace Ppt_lib
 {
    
@@ -26,9 +26,19 @@ namespace Ppt_lib
                 PresentationPart presentationPart = presentationDocument.AddPresentationPart();
                 presentationPart.Presentation = new Presentation();
 
-                CreatePresentationDocument.CreatePresentationParts(presentationPart);
+                 CreatePresentationDocument.CreatePresentationParts(presentationPart);
+
+               /* SlidePart slidePart = presentationPart.AddNewPart<SlidePart>();
+                slidePart.Slide = new Slide(new CommonSlideData() { ShapeTree=new ShapeTree() }, new ShapeTree());
 
 
+                // Add a shape to the slide
+                Shape shape = new Shape();
+                shape.TextBody = new TextBody(new D.BodyProperties(), new D.Paragraph(new D.Run(new Text("Hello, World!"))));
+                slidePart.Slide.CommonSlideData.ShapeTree.AppendChild(shape);*/
+
+
+                //  HtmlDocument htmlDocument
                 //HtmlConverter converter = new HtmlConverter(presentationDocument);
                 //converter.ParseHtml(html);
                 presentationDocument.Save();
