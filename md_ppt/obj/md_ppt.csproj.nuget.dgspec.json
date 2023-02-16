@@ -103,6 +103,10 @@
               "target": "Package",
               "version": "[2.19.0, )"
             },
+            "HtmlAgilityPack": {
+              "target": "Package",
+              "version": "[1.11.46, )"
+            },
             "Markdig": {
               "target": "Package",
               "version": "[0.30.4, )"

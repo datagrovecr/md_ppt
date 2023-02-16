@@ -8,13 +8,14 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Presentation;
 using P = DocumentFormat.OpenXml.Presentation;
 using D = DocumentFormat.OpenXml.Drawing;
+using HtmlAgilityPack;
 
 namespace ppt_lib
 {
     internal class CreatePresentationDocument
     {
 
-        public static void CreatePresentationParts(PresentationPart presentationPart)
+        public static void CreatePresentationParts(PresentationPart presentationPart,HtmlDocument htmlDoc)
         {
             SlideMasterIdList slideMasterIdList1 = new SlideMasterIdList(new SlideMasterId() { Id = (UInt32Value)2147483648U, RelationshipId = "rId1" });
             SlideIdList slideIdList1 = new SlideIdList(new SlideId() { Id = (UInt32Value)256U, RelationshipId = "rId2" });
@@ -26,26 +27,41 @@ namespace ppt_lib
             presentationPart.Presentation.Append(slideMasterIdList1, slideIdList1, slideSize1, notesSize1, defaultTextStyle1);
 
             SlidePart slidePart1;
-            SlideLayoutPart slideLayoutPart1;
-            SlideMasterPart slideMasterPart1;
-            ThemePart themePart1;
+            //JUST NEED 1 OF THESE
+            SlideLayoutPart slideLayoutPart1=null;
+            SlideMasterPart slideMasterPart1=null;
+            ThemePart themePart1=null;
 
 
-            slidePart1 = CreateSlidePart(presentationPart);
-            slideLayoutPart1 = CreateSlideLayoutPart(slidePart1);
-            slideMasterPart1 = CreateSlideMasterPart(slideLayoutPart1);
-            themePart1 = CreateTheme(slideMasterPart1);
+            for (int i = 2; i < 4; i++)
+            {
+                slidePart1 = CreateSlidePart(presentationPart, i, htmlDoc);
+                if (i==2)
+                 {
+
+                    slideLayoutPart1 = CreateSlideLayoutPart(slidePart1);
+                    slideMasterPart1 = CreateSlideMasterPart(slideLayoutPart1);
+                    themePart1 = CreateTheme(slideMasterPart1);
+
+                    //rd1 slide layuout 1
+                
+
+                }
+                
+            }
+            //slidePart1 = CreateSlidePart(presentationPart, i, htmlDoc);
+
 
             slideMasterPart1.AddPart(slideLayoutPart1, "rId1");
             presentationPart.AddPart(slideMasterPart1, "rId1");
             presentationPart.AddPart(themePart1, "rId5");
         }
 
-        public static SlidePart CreateSlidePart(PresentationPart presentationPart)
+        public static SlidePart CreateSlidePart(PresentationPart presentationPart,int i, HtmlDocument htmlDoc)
         {
-            // offset max 6400000 
-            SlidePart slidePart1 = presentationPart.AddNewPart<SlidePart>("rId2");
-            slidePart1.Slide = new Slide(
+            // offset max Y 6400000 
+            SlidePart slidePart = presentationPart.AddNewPart<SlidePart>("rId"+i);
+            /*slidePart.Slide = new Slide(
                     new CommonSlideData(
                         new ShapeTree(
                             new P.NonVisualGroupShapeProperties(
@@ -67,7 +83,7 @@ namespace ppt_lib
                                          //new Extents() { Cx = 9144000, Cy = 457200 }
                                          )
                                 },
-                                new P.TextBody(
+                                new P.TextBody(  //THIS PART SHOULD BE LOOPED
                                     new BodyProperties(),
                                     new ListStyle(),
                                     new Paragraph(new Run(
@@ -81,7 +97,65 @@ namespace ppt_lib
                         ),
                     new ColorMapOverride(new MasterColorMapping())
                     );
-            return slidePart1;
+*/
+            Paragraph paragraph = new Paragraph();
+            foreach (var itemSack in htmlDoc.DocumentNode.ChildNodes)
+            {
+
+
+                paragraph.AppendChild(
+                      new Run( //multiple runs
+                                      new D.RunProperties() { Language = "en-US", Dirty = false, SpellingError = false, FontSize = 2200 },
+                                      new D.Text() { Text = itemSack.InnerText })
+
+
+                    );
+
+            }
+
+            paragraph.AppendChild(new EndParagraphRunProperties() { Language = "en-US" });
+
+
+
+
+            P.Shape shape = new P.Shape(
+                                new P.NonVisualShapeProperties(
+                                    new P.NonVisualDrawingProperties() { Id = (UInt32Value)2U, Name = "Title 1" },
+                                    new P.NonVisualShapeDrawingProperties(new ShapeLocks() { NoGrouping = true }),
+                                    new ApplicationNonVisualDrawingProperties(new PlaceholderShape())),
+                                new P.ShapeProperties()
+                                {
+
+                                    Transform2D = new Transform2D(
+                                         new Offset() { X = 0, Y = 0 },
+                                         new Extents() { Cx = 9144000, Cy = 457200 }
+                                         //new Extents() { Cx = 9144000, Cy = 457200 }
+                                         )
+                                },
+                                new P.TextBody( 
+                                    new BodyProperties(),
+                                    new ListStyle(),
+                                    paragraph
+                                    )
+                                );
+
+
+
+            slidePart.Slide = new Slide(
+                    new CommonSlideData(
+                        new ShapeTree(
+                            new P.NonVisualGroupShapeProperties(
+                                new P.NonVisualDrawingProperties() { Id = (UInt32Value)1U, Name = "" },
+                                new P.NonVisualGroupShapeDrawingProperties(),
+                                new ApplicationNonVisualDrawingProperties()),
+                            new GroupShapeProperties(new TransformGroup()),
+                            shape
+                            )
+                        ),
+                    new ColorMapOverride(new MasterColorMapping())
+                    );
+
+            return slidePart;
         }
         public static SlideLayoutPart CreateSlideLayoutPart(SlidePart slidePart1)
         {

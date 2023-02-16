@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "L0WLNklf2cPY/uJt/kK1ijXEgXeI3f/tJ/SHr2TTbPV62R8rHfXy7DAniMJMM+KkW7gVVNdNk0L6uPFbFrmd0Q==",
+  "dgSpecHash": "/6AycCmpRYJa6wWsw+d3Mu+bczF/A5bjZUkASyHj7u2NG/R2U+jULtrONUNpD3Xr4c7v96XAc/GACoHgOVN4mA==",
   "success": true,
   "projectFilePath": "C:\\Users\\jaftb\\Documents\\md_ppt\\ppt_lib\\ppt_lib.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\jaftb\\.nuget\\packages\\documentformat.openxml\\2.19.0\\documentformat.openxml.2.19.0.nupkg.sha512",
+    "C:\\Users\\jaftb\\.nuget\\packages\\htmlagilitypack\\1.11.46\\htmlagilitypack.1.11.46.nupkg.sha512",
     "C:\\Users\\jaftb\\.nuget\\packages\\markdig\\0.30.4\\markdig.0.30.4.nupkg.sha512",
     "C:\\Users\\jaftb\\.nuget\\packages\\system.io.packaging\\4.7.0\\system.io.packaging.4.7.0.nupkg.sha512"
   ],
