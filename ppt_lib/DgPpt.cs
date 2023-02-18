@@ -25,23 +25,25 @@ namespace Ppt_lib
             var html = Markdown.ToHtml(md, pipeline);
             using (PresentationDocument presentationDocument = PresentationDocument.Create(outputStream, PresentationDocumentType.Presentation, true))
             {
-                PresentationPart presentationPart = presentationDocument.AddPresentationPart();
-                presentationPart.Presentation = new Presentation();
+                
                 //  HtmlDocument htmlDocument
                 HtmlDocument htmlDoc = new HtmlDocument();
                 htmlDoc.LoadHtml(html);
 
+                // Create a presentation at a specified file path. The presentation document type is pptx, by default.
+                PresentationPart presentationPart = presentationDocument.AddPresentationPart();
+                presentationPart.Presentation = new Presentation();
 
-                CreatePresentationDocument.CreatePresentationParts(presentationPart, htmlDoc);
-
-              
-
-               
+                CreatePresentationDocument.CreatePresentationParts(presentationPart);
+                processSlidesAdd.InsertNewSlide2(presentationDocument, 1, "AAAAAAAAAAAAAAAAAAAAAAAAAAA 1");
+                processSlidesAdd.InsertNewSlide2(presentationDocument, 2, "AAAAAAAAAAAAAAAAAAAAAAAAAAA 2");
                 
-                
-                //HtmlConverter converter = new HtmlConverter(presentationDocument);
-                //converter.ParseHtml(html);
                 presentationDocument.Save();
+                
+                //Close the presentation handle
+                presentationDocument.Close();
+                //CreatePresentationDocument.CreatePresentationParts(presentationDocument, htmlDoc);
+
             }
         }
 
