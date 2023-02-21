@@ -13,7 +13,7 @@ using DocumentFormat.OpenXml.Office2010.PowerPoint;
 
 namespace ppt_lib
 {
-    internal class openXmlProcessing
+    internal class openXmlProcessingToMd
     {
         public static int isInlineStile = 0;
         public static IEnumerable<HyperlinkRelationship> links = null;

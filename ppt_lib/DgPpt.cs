@@ -35,9 +35,10 @@ namespace Ppt_lib
                 presentationPart.Presentation = new Presentation();
 
                 CreatePresentationDocument.CreatePresentationParts(presentationPart);
-                processSlidesAdd.InsertNewSlide2(presentationDocument, 1, "AAAAAAAAAAAAAAAAAAAAAAAAAAA 1");
+                processSlidesAdd.ProcessHtmlToPresentation(presentationDocument,htmlDoc);
+                /*processSlidesAdd.InsertNewSlide2(presentationDocument, 1, "AAAAAAAAAAAAAAAAAAAAAAAAAAA 1");
                 processSlidesAdd.InsertNewSlide2(presentationDocument, 2, "AAAAAAAAAAAAAAAAAAAAAAAAAAA 2");
-                
+                */
                 presentationDocument.Save();
                 
                 //Close the presentation handle
@@ -67,7 +68,7 @@ namespace Ppt_lib
 
                     if (treeBranch is DocumentFormat.OpenXml.Presentation.Picture)
                     {
-                        openXmlProcessing.ProcessPicture((DocumentFormat.OpenXml.Presentation.Picture)treeBranch, textBuilder, slides);
+                        openXmlProcessingToMd.ProcessPicture((DocumentFormat.OpenXml.Presentation.Picture)treeBranch, textBuilder, slides);
                         textBuilder.Append("\n");
                     }
 
@@ -84,7 +85,7 @@ namespace Ppt_lib
                     //DocumentFormat.OpenXml.Presentation.Shape
                     if (treeBranch is Shape)
                     {
-                        openXmlProcessing.ProcessParagraph((Shape)treeBranch, textBuilder, slides);
+                        openXmlProcessingToMd.ProcessParagraph((Shape)treeBranch, textBuilder, slides);
                     }
                     //DocumentFormat.OpenXml.Presentation.GraphicFrame
                     if (treeBranch is DocumentFormat.OpenXml.Presentation.GraphicFrame)
@@ -92,7 +93,7 @@ namespace Ppt_lib
                         //var tables = treeBranch.Descendants<DocumentFormat.OpenXml.Drawing.Table>();
                         foreach (var tables in treeBranch.Descendants<DocumentFormat.OpenXml.Drawing.Table>())
                         {
-                           string result= openXmlProcessing.ProcessTable(tables);
+                           string result= openXmlProcessingToMd.ProcessTable(tables);
                            textBuilder.Append(result);
                             textBuilder.Append("\n");
                         }
