@@ -53,7 +53,12 @@ namespace ppt_lib
                 }
                 else if (htmlNode.Name == "ul")
                 {
-                    shapes.Add(shapeList.ListShape(y, htmlNode));
+                    shapes.Add(shapeList.BulletListShape(y, htmlNode));
+                    //y += 1000000;
+                }
+                else if (htmlNode.Name == "ol")
+                {
+                    shapes.Add(shapeList.OrderedListShape(y, htmlNode));
                     //y += 1000000;
                 }
                 else
