@@ -10,21 +10,174 @@ namespace ppt_lib
 {
     internal class processSlidesAdd
     {
+        public static uint drawingObjectId2 = 2;
+
         // Insert a slide into the specified presentation.
         public static void ProcessHtmlToPresentation(PresentationDocument presentationDocument, HtmlDocument htmlDoc)
         {
-            int i = 1;
-            InsertNewSlide(presentationDocument, 1, htmlDoc);
-
-            foreach (var htmlNode in htmlDoc.DocumentNode.ChildNodes.Reverse())
-            {
-               
-              
-                    break;
             
-                i++;
+            List<List<Shape>> listOfShapes=new();
+            List<Shape> shapes = new();
+            int i = 1;
+            int y = 1000000;
+            //InsertNewSlide(presentationDocument, 1, htmlDoc);
+            //CREATE ALL SHAPES AND THEN DECIDE TO ADD IT TO INSERT SLIDE
+            //HANDLE THE POSITION HERE
+            //SET THEIR POSITION BY DEFAULT AND LATER ACCESS  ShapeProperties
+            //OR USE A FOR LOOP TO ADJUST     Y=VALUE
+            foreach (var htmlNode in htmlDoc.DocumentNode.ChildNodes)
+            {
+
+                if (y >= 3000000)
+                {
+                    listOfShapes.Add(shapes);
+                    shapes = new();
+                }
+                if (htmlNode.Name == "h1" || htmlNode.Name == "h2" || htmlNode.Name == "h3" || htmlNode.Name == "h3")
+                {
+                    // Declare and instantiate the title shape of the new slide.
+                    shapes.Add(shapeList.TitleShape(y, htmlNode));
+                    
+                    listOfShapes.Add(shapes);
+                    shapes = new();
+
+
+                    drawingObjectId2++;
+                    y = 1000000;
+
+                }
+                else if (htmlNode.Name == "p")
+                {
+                    shapes.Add(shapeList.TextShape(y, htmlNode));
+                    y += 1000000;
+                }
+                else
+                {
+                    //everithing else
+
+                }
                 
+               
             }
+            if (shapes.Count > 0)  listOfShapes.Add(shapes);
+
+            //HERE LOOP YOUR LIST OF LIST'S
+            foreach (var shapes1 in listOfShapes)
+            {
+                InsertNewSlideBaby(presentationDocument, i, shapes1);
+                i++;
+            }
+
+        }
+        public static void InsertNewSlideBaby(PresentationDocument presentationDocument, int position, List<Shape> shapes3)
+        {
+            // HtmlNode htmlNode
+            if (presentationDocument == null)
+            {
+                throw new ArgumentNullException("presentationDocument");
+            }
+
+            /*if (htmlNode.InnerText == null)
+            {
+                throw new ArgumentNullException("slideTitle");
+            }*/
+
+            PresentationPart presentationPart = presentationDocument.PresentationPart;
+
+            // Verify that the presentation is not empty.
+            if (presentationPart == null)
+            {
+                throw new InvalidOperationException("The presentation document is empty.");
+            }
+
+            // Declare and instantiate a new slide.
+            Slide slide = new Slide(new CommonSlideData(new ShapeTree()));
+            uint drawingObjectId = 1;
+
+            // Construct the slide content.            
+            // Specify the non-visual properties of the new slide.
+            NonVisualGroupShapeProperties nonVisualProperties = slide.CommonSlideData.ShapeTree.AppendChild(new NonVisualGroupShapeProperties());
+            nonVisualProperties.NonVisualDrawingProperties = new NonVisualDrawingProperties() { Id = 1, Name = "" };
+            nonVisualProperties.NonVisualGroupShapeDrawingProperties = new NonVisualGroupShapeDrawingProperties();
+            nonVisualProperties.ApplicationNonVisualDrawingProperties = new ApplicationNonVisualDrawingProperties();
+
+            // Specify the group shape properties of the new slide.
+            slide.CommonSlideData.ShapeTree.AppendChild(new GroupShapeProperties());
+
+            foreach (var shapeNode in shapes3)
+            {
+
+                shapeNode.NonVisualShapeProperties.NonVisualDrawingProperties.Id = drawingObjectId;
+
+                // Declare and instantiate the title shape of the new slide.
+                //Shape shapeIncoming = slide.CommonSlideData.ShapeTree.AppendChild(new Shape());
+                slide.CommonSlideData.ShapeTree.AppendChild(shapeNode);
+
+                //deal with this later
+                drawingObjectId++;
+              
+
+
+            }
+
+
+
+            // Create the slide part for the new slide.
+            SlidePart slidePart = presentationPart.AddNewPart<SlidePart>();
+
+            // Save the new slide part.
+            slide.Save(slidePart);
+
+            // Modify the slide ID list in the presentation part.
+            // The slide ID list should not be null.
+            SlideIdList slideIdList = presentationPart.Presentation.SlideIdList;
+
+            // Find the highest slide ID in the current list.
+            uint maxSlideId = 1;
+            SlideId prevSlideId = null;
+
+            foreach (SlideId slideId in slideIdList.ChildElements)
+            {
+                if (slideId.Id > maxSlideId)
+                {
+                    maxSlideId = slideId.Id;
+                }
+
+                position--;
+                if (position == 0)
+                {
+                    prevSlideId = slideId;
+                }
+
+            }
+
+            maxSlideId++;
+
+            // Get the ID of the previous slide.
+            SlidePart lastSlidePart;
+
+            if (prevSlideId != null)
+            {
+                lastSlidePart = (SlidePart)presentationPart.GetPartById(prevSlideId.RelationshipId);
+            }
+            else
+            {
+                lastSlidePart = (SlidePart)presentationPart.GetPartById(((SlideId)(slideIdList.ChildElements[0])).RelationshipId);
+            }
+
+            // Use the same slide layout as that of the previous slide.
+            if (null != lastSlidePart.SlideLayoutPart)
+            {
+                slidePart.AddPart(lastSlidePart.SlideLayoutPart);
+            }
+
+            // Insert the new slide into the slide list after the previous slide.
+            SlideId newSlideId = slideIdList.InsertAfter(new SlideId(), prevSlideId);
+            newSlideId.Id = maxSlideId;
+            newSlideId.RelationshipId = presentationPart.GetIdOfPart(slidePart);
+
+            // Save the modified presentation.
+            presentationPart.Presentation.Save();
         }
 
         public static void InsertNewSlide(PresentationDocument presentationDocument, int position, HtmlDocument htmlDoc)
@@ -68,6 +221,8 @@ namespace ppt_lib
             {
                 if (i==2)
                 {
+                    //create slide
+
                     break;
                 }
                 
@@ -75,7 +230,7 @@ namespace ppt_lib
                 {
                     // Declare and instantiate the title shape of the new slide.
                     Shape titleShape = slide.CommonSlideData.ShapeTree.AppendChild(new Shape());
-
+                    //deal with this later
                     drawingObjectId++;
 
                     // Specify the required shape properties for the title shape. 
