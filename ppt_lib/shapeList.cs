@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml.Presentation;
+using DocumentFormat.OpenXml.Wordprocessing;
 using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
@@ -97,6 +98,70 @@ namespace ppt_lib
                                         )
                     );
             return bodyShape;
+        }
+
+        public static Shape ListShape(int y, HtmlNode htmlNode)
+        {
+
+
+            //set the font size 
+            // Declare and instantiate the body shape of the new slide.
+            Shape listShape = new Shape();
+
+            // Specify the required shape properties for the body shape.
+            listShape.NonVisualShapeProperties = new NonVisualShapeProperties(new NonVisualDrawingProperties() { Id = processSlidesAdd.drawingObjectId2, Name = "Content Placeholder" },
+                    new NonVisualShapeDrawingProperties(new Drawing.ShapeLocks() { NoGrouping = true }),
+                    new ApplicationNonVisualDrawingProperties(new PlaceholderShape() { Index = 1 }));
+            listShape.ShapeProperties = new ShapeProperties()
+            {
+                Transform2D = new Drawing.Transform2D(
+                                         new Drawing.Offset() { X = 0, Y = y },
+                                         new Drawing.Extents() { Cx = 9144000, Cy = 457200 }
+                                         )
+            };
+
+            /*
+             <a:pPr marL="285750" indent="-285750" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">
+            <a:buFont typeface="Arial" panose="020B0604020202020204" pitchFamily="34" charset="0" />
+            <a:buChar char="•" />
+            </a:pPr><a:r xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">
+            <a:rPr lang="en-US" dirty="0" />
+            <a:t>Element1</a:t>
+            </a:r>
+             */
+            string textList = "";
+            int lastNode =htmlNode.ChildNodes.Count-2;
+            int index = 0;
+            foreach (var list in htmlNode.ChildNodes)
+            {
+                if (index== lastNode && list.Name== "li")
+                {
+                    textList += list.InnerText;
+                    processSlidesAdd.y += 300000;
+                }
+                else if (list.Name == "li")
+                {
+                    textList += list.InnerText + "\n";
+                    processSlidesAdd.y +=  300000;
+                }
+                index++;
+            }
+
+            // Specify the text of the title shape.
+            listShape.TextBody = new TextBody(new Drawing.BodyProperties(),
+                    new Drawing.ListStyle() ,
+                    
+                    new Drawing.Paragraph(
+                        new Drawing.ParagraphProperties(
+                            new Drawing.BulletFont() { Typeface= "Arial", Panose= "020B0604020202020204", PitchFamily = 34 , CharacterSet = 0 },
+                            new Drawing.CharacterBullet() { Char= "•" }
+                        ) { Alignment = Drawing.TextAlignmentTypeValues.Center, LeftMargin= 285750,Indent= -285750 },
+                        new Drawing.Run(
+                         new Drawing.RunProperties() { Language = "en-US", Dirty = false, SpellingError = false, FontSize = 1800 },
+                        new Drawing.Text() { Text = textList })
+                                        )
+                    );
+            return listShape;
         }
     }
 }

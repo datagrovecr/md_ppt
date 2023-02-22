@@ -11,7 +11,7 @@ namespace ppt_lib
     internal class processSlidesAdd
     {
         public static uint drawingObjectId2 = 2;
-
+        public static int y = 1000000;
         // Insert a slide into the specified presentation.
         public static void ProcessHtmlToPresentation(PresentationDocument presentationDocument, HtmlDocument htmlDoc)
         {
@@ -19,7 +19,7 @@ namespace ppt_lib
             List<List<Shape>> listOfShapes=new();
             List<Shape> shapes = new();
             int i = 1;
-            int y = 1000000;
+            
             //InsertNewSlide(presentationDocument, 1, htmlDoc);
             //CREATE ALL SHAPES AND THEN DECIDE TO ADD IT TO INSERT SLIDE
             //HANDLE THE POSITION HERE
@@ -28,7 +28,7 @@ namespace ppt_lib
             foreach (var htmlNode in htmlDoc.DocumentNode.ChildNodes)
             {
 
-                if (y >= 3000000)
+                if (y >= 5000000)
                 {
                     listOfShapes.Add(shapes);
                     shapes = new();
@@ -50,6 +50,11 @@ namespace ppt_lib
                 {
                     shapes.Add(shapeList.TextShape(y, htmlNode));
                     y += 1000000;
+                }
+                else if (htmlNode.Name == "ul")
+                {
+                    shapes.Add(shapeList.ListShape(y, htmlNode));
+                    //y += 1000000;
                 }
                 else
                 {
@@ -110,10 +115,9 @@ namespace ppt_lib
                 shapeNode.NonVisualShapeProperties.NonVisualDrawingProperties.Id = drawingObjectId;
 
                 // Declare and instantiate the title shape of the new slide.
-                //Shape shapeIncoming = slide.CommonSlideData.ShapeTree.AppendChild(new Shape());
                 slide.CommonSlideData.ShapeTree.AppendChild(shapeNode);
 
-                //deal with this later
+                
                 drawingObjectId++;
               
 
