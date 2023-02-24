@@ -93,12 +93,9 @@ namespace ppt_lib
 
                                     //IS A BULLET LIST?
                                     if (isBullet((DocumentFormat.OpenXml.Drawing.Paragraph)item)) text = "* " + text+"\n";
-
-                                    
                                     
                                         //textBuilder.Append(text + "\n");
                                         textBuilder.Append(text + "");
-
                                     
                                     text = "";
                                 }

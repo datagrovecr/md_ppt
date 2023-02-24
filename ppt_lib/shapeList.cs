@@ -230,5 +230,49 @@ namespace ppt_lib
                     );
             return listShape;
         }
+
+
+        public static Shape codeblockShape(int y, HtmlNode htmlNode)
+        {
+
+            //set the font size 
+            // Declare and instantiate the body shape of the new slide.
+            Shape bodyShape = new Shape();
+
+            // Specify the required shape properties for the body shape.
+            bodyShape.NonVisualShapeProperties = new NonVisualShapeProperties(new NonVisualDrawingProperties() { Id = processSlidesAdd.drawingObjectId2, Name = "Content Placeholder" },
+                    new NonVisualShapeDrawingProperties(new Drawing.ShapeLocks() { NoGrouping = true }),
+                    new ApplicationNonVisualDrawingProperties(new PlaceholderShape() { Index = 1 }));
+            bodyShape.ShapeProperties = new ShapeProperties(
+                new Drawing.PresetGeometry(new Drawing.AdjustValueList()) { Preset=Drawing.ShapeTypeValues.Rectangle}
+                ,
+                new Drawing.SolidFill(new DocumentFormat.OpenXml.Drawing.SchemeColor(new Drawing.LuminanceModulation(){Val=10000 }) { Val=Drawing.SchemeColorValues.Background1} )
+               
+
+                )
+            {
+
+                Transform2D = new Drawing.Transform2D(
+                                         new Drawing.Offset() { X = 0, Y = y },
+                                         new Drawing.Extents() { Cx = 8144000, Cy = 923330 }
+                                         )
+
+            };
+
+
+            // Specify the text of the title shape.
+            bodyShape.TextBody = new TextBody(new Drawing.BodyProperties() { Wrap=Drawing.TextWrappingValues.Square},
+                    new Drawing.ListStyle(),
+                    new Drawing.Paragraph(
+                        new Drawing.ParagraphProperties() { Alignment = Drawing.TextAlignmentTypeValues.Left },
+                        new Drawing.Run(
+                         new Drawing.RunProperties() { Language = "en-US", Dirty = false, SpellingError = false, FontSize = 1800 },
+                        new Drawing.Text() { Text = htmlNode.InnerText })
+                                        )
+                    );
+
+            return bodyShape;
+
+        }
     }
 }

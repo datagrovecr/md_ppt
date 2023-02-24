@@ -61,6 +61,22 @@ namespace ppt_lib
                     shapes.Add(shapeList.OrderedListShape(y, htmlNode));
                     //y += 1000000;
                 }
+                else if (htmlNode.Name == "pre")
+                {
+                    foreach (var htmlNodeSon in htmlNode.ChildNodes)
+                     {
+                        if (htmlNodeSon.Name=="code")
+                        {
+                            shapes.Add(shapeList.codeblockShape(y, htmlNode));
+                            y += 1000000;
+
+                        }
+                    }
+                   /* if (htmlNode.Descendants<c>)
+                    {
+
+                    }*/
+                }
                 else
                 {
                     //everithing else
