@@ -77,6 +77,11 @@ namespace ppt_lib
 
                     }*/
                 }
+                else if (htmlNode.Name =="blockquote")
+                {
+                    shapes.Add(shapeList.BlockQuoteShape(y, htmlNode));
+                    y += 1000000;
+                }
                 else
                 {
                     //everithing else

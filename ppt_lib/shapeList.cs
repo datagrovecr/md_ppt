@@ -239,6 +239,23 @@ namespace ppt_lib
             // Declare and instantiate the body shape of the new slide.
             Shape bodyShape = new Shape();
 
+            ///
+            /// 
+            /// <a:xfrm xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">
+            /// <a:off x="500000" y="1064008" />
+            /// <a:ext cx="8144000" cy="923330" />
+            /// </a:xfrm>
+            /// <a:prstGeom prst="rect" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">
+            /// <a:avLst />
+            /// </a:prstGeom>
+            /// <a:solidFill xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">
+            /// <a:schemeClr val="bg1">
+            /// <a:lumMod val="65000" />
+            /// </a:schemeClr>
+            /// </a:solidFill>
+            /// 
+
+            
             // Specify the required shape properties for the body shape.
             bodyShape.NonVisualShapeProperties = new NonVisualShapeProperties(new NonVisualDrawingProperties() { Id = processSlidesAdd.drawingObjectId2, Name = "Content Placeholder" },
                     new NonVisualShapeDrawingProperties(new Drawing.ShapeLocks() { NoGrouping = true }),
@@ -246,14 +263,14 @@ namespace ppt_lib
             bodyShape.ShapeProperties = new ShapeProperties(
                 new Drawing.PresetGeometry(new Drawing.AdjustValueList()) { Preset=Drawing.ShapeTypeValues.Rectangle}
                 ,
-                new Drawing.SolidFill(new DocumentFormat.OpenXml.Drawing.SchemeColor(new Drawing.LuminanceModulation(){Val=10000 }) { Val=Drawing.SchemeColorValues.Background1} )
+                new Drawing.SolidFill(new DocumentFormat.OpenXml.Drawing.SchemeColor(new Drawing.LuminanceModulation(){Val= 65000 }) { Val=Drawing.SchemeColorValues.Background1} )
                
 
                 )
             {
 
                 Transform2D = new Drawing.Transform2D(
-                                         new Drawing.Offset() { X = 0, Y = y },
+                                         new Drawing.Offset() { X = 500000, Y = y },
                                          new Drawing.Extents() { Cx = 8144000, Cy = 923330 }
                                          )
 
@@ -268,6 +285,70 @@ namespace ppt_lib
                         new Drawing.Run(
                          new Drawing.RunProperties() { Language = "en-US", Dirty = false, SpellingError = false, FontSize = 1800 },
                         new Drawing.Text() { Text = htmlNode.InnerText })
+                                        )
+                    );
+
+            return bodyShape;
+
+        }
+
+        public static Shape BlockQuoteShape(int y, HtmlNode htmlNode)
+        {
+
+            //set the font size 
+            // Declare and instantiate the body shape of the new slide.
+            Shape bodyShape = new Shape();
+
+            ///
+            /// 
+            /// <a:xfrm xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">
+            /// <a:off x="500000" y="1064008" />
+            /// <a:ext cx="8144000" cy="923330" />
+            /// </a:xfrm>
+            /// <a:prstGeom prst="rect" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">
+            /// <a:avLst />
+            /// </a:prstGeom>
+            /// <a:solidFill xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">
+            /// <a:schemeClr val="bg1">
+            /// <a:lumMod val="65000" />
+            /// </a:schemeClr>
+            /// </a:solidFill>
+            /// 
+
+
+            // Specify the required shape properties for the body shape.
+            bodyShape.NonVisualShapeProperties = new NonVisualShapeProperties(
+                new NonVisualDrawingProperties() { Id = processSlidesAdd.drawingObjectId2, Name = "Content Placeholder" },
+                    new NonVisualShapeDrawingProperties(new Drawing.ShapeLocks() { NoGrouping = true }),
+                    new ApplicationNonVisualDrawingProperties(new PlaceholderShape() { Index = 1 })
+                    )
+            ;
+
+            bodyShape.ShapeProperties = new ShapeProperties(
+                new Drawing.PresetGeometry(new Drawing.AdjustValueList()) { Preset = Drawing.ShapeTypeValues.Rectangle }
+               /* ,
+                new Drawing.SolidFill(new DocumentFormat.OpenXml.Drawing.SchemeColor(new Drawing.LuminanceModulation() { Val = 65000 }) { Val = Drawing.SchemeColorValues.Background1 })*/
+                )
+            {
+
+                Transform2D = new Drawing.Transform2D(
+                                         new Drawing.Offset() { X = 500000, Y = y },
+                                         new Drawing.Extents() { Cx = 8144000, Cy = 923330 }
+                                         )
+
+            };
+
+
+            // Specify the text of the title shape.
+            bodyShape.TextBody = new TextBody(new Drawing.BodyProperties(new Drawing.ShapeAutoFit()) { Wrap = Drawing.TextWrappingValues.Square, RightToLeftColumns = false },
+                    new Drawing.ListStyle(),
+                    new Drawing.Paragraph(
+                        new Drawing.ParagraphProperties() {Level=1 },
+                        new Drawing.Run(
+                         new Drawing.RunProperties() { Language = "en-US", Dirty = false, SpellingError = false, FontSize = 1800 },
+                        new Drawing.Text() { Text = htmlNode.InnerText })
+                        ,
+                        new Drawing.EndParagraphRunProperties()
                                         )
                     );
 

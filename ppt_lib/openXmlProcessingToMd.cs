@@ -104,6 +104,7 @@ namespace ppt_lib
                             }
                             if (paragraphProperties != null)
                             {
+                                //blockquote
                                 if (paragraphProperties.Level > 0)
                                 {
                                     text = textBuilder.ToString();

@@ -1,3 +1,2 @@
-``` 
-	A lotta text``` 
+> texto
 

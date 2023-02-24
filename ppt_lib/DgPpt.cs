@@ -57,7 +57,10 @@ namespace Ppt_lib
             StringBuilder textBuilder = new StringBuilder();
             List<string> uri = new List<string>();
 
+            foreach (var retsam in slideMasterPart)
+            {
 
+            }
 
             foreach (var slides in slidePart)
             {
