@@ -1,4 +1,5 @@
-﻿using DocumentFormat.OpenXml.Presentation;
+﻿using DocumentFormat.OpenXml.ExtendedProperties;
+using DocumentFormat.OpenXml.Presentation;
 using DocumentFormat.OpenXml.Wordprocessing;
 using HtmlAgilityPack;
 using System;
@@ -14,11 +15,11 @@ namespace ppt_lib
     internal class shapeList
     {
 
-        public static Shape TitleShape(int y,HtmlNode htmlNode)
+        public static Shape TitleShape(int y, HtmlNode htmlNode)
         {
 
             //drawingObjectId++;
-            Shape titleShape=new Shape();
+            Shape titleShape = new Shape();
             // Specify the required shape properties for the title shape. 
             titleShape.NonVisualShapeProperties = new NonVisualShapeProperties
                 (new NonVisualDrawingProperties() { Id = processSlidesAdd.drawingObjectId2, Name = "Title" },
@@ -69,10 +70,10 @@ namespace ppt_lib
         public static Shape TextShape(int y, HtmlNode htmlNode)
         {
 
-           
+
             //set the font size 
             // Declare and instantiate the body shape of the new slide.
-            Shape bodyShape =new Shape();
+            Shape bodyShape = new Shape();
 
             // Specify the required shape properties for the body shape.
             bodyShape.NonVisualShapeProperties = new NonVisualShapeProperties(new NonVisualDrawingProperties() { Id = processSlidesAdd.drawingObjectId2, Name = "Content Placeholder" },
@@ -86,17 +87,23 @@ namespace ppt_lib
                                          )
             };
 
+            Drawing.Paragraph Slide = new Drawing.Paragraph();
 
             // Specify the text of the title shape.
             bodyShape.TextBody = new TextBody(new Drawing.BodyProperties(),
-                    new Drawing.ListStyle(),
+                    new Drawing.ListStyle()
+                    /*,
                     new Drawing.Paragraph(
                         new Drawing.ParagraphProperties() { Alignment = Drawing.TextAlignmentTypeValues.Center },
                         new Drawing.Run(
                          new Drawing.RunProperties() { Language = "en-US", Dirty = false, SpellingError = false, FontSize = 1800 },
                         new Drawing.Text() { Text = htmlNode.InnerText })
-                                        )
+                                        )*/
+
                     );
+            TextBodyProcess(bodyShape.TextBody,htmlNode);
+
+
             return bodyShape;
         }
 
@@ -130,32 +137,33 @@ namespace ppt_lib
             </a:r>
              */
             string textList = "";
-            int lastNode =htmlNode.ChildNodes.Count-2;
+            int lastNode = htmlNode.ChildNodes.Count - 2;
             int index = 0;
             foreach (var list in htmlNode.ChildNodes)
             {
-                if (index== lastNode && list.Name== "li")
+                if (index == lastNode && list.Name == "li")
                 {
                     textList += list.InnerText;
-                    processSlidesAdd.y += 300000;
+                    processSlidesAdd.y += 600000;
                 }
                 else if (list.Name == "li")
                 {
                     textList += list.InnerText + "\n";
-                    processSlidesAdd.y +=  300000;
+                    processSlidesAdd.y += 300000;
                 }
                 index++;
             }
 
             // Specify the text of the title shape.
             listShape.TextBody = new TextBody(new Drawing.BodyProperties(),
-                    new Drawing.ListStyle() ,
-                    
+                    new Drawing.ListStyle(),
+
                     new Drawing.Paragraph(
                         new Drawing.ParagraphProperties(
-                            new Drawing.BulletFont() { Typeface= "Arial", Panose= "020B0604020202020204", PitchFamily = 34 , CharacterSet = 0 },
-                            new Drawing.CharacterBullet() { Char= "•" }
-                        ) { Alignment = Drawing.TextAlignmentTypeValues.Center, LeftMargin= 285750,Indent= -285750 },
+                            new Drawing.BulletFont() { Typeface = "Arial", Panose = "020B0604020202020204", PitchFamily = 34, CharacterSet = 0 },
+                            new Drawing.CharacterBullet() { Char = "•" }
+                        )
+                        { Alignment = Drawing.TextAlignmentTypeValues.Center, LeftMargin = 285750, Indent = -285750 },
                         new Drawing.Run(
                          new Drawing.RunProperties() { Language = "en-US", Dirty = false, SpellingError = false, FontSize = 1800 },
                         new Drawing.Text() { Text = textList })
@@ -203,11 +211,11 @@ namespace ppt_lib
                 if (index == lastNode && list.Name == "li")
                 {
                     textList += list.InnerText;
-                    processSlidesAdd.y += 300000;
+                    processSlidesAdd.y += 600000;
                 }
                 else if (list.Name == "li")
                 {
-                    textList +=  list.InnerText + "\n";
+                    textList += list.InnerText + "\n";
                     processSlidesAdd.y += 300000;
                 }
                 index++;
@@ -220,7 +228,7 @@ namespace ppt_lib
                     new Drawing.Paragraph(
                         new Drawing.ParagraphProperties(
                             new Drawing.BulletFont() { Typeface = "Arial", Panose = "020B0604020202020204", PitchFamily = 34, CharacterSet = 0 },
-                            new Drawing.AutoNumberedBullet() {Type=Drawing.TextAutoNumberSchemeValues.ArabicPeriod  }
+                            new Drawing.AutoNumberedBullet() { Type = Drawing.TextAutoNumberSchemeValues.ArabicPeriod }
                         )
                         { Alignment = Drawing.TextAlignmentTypeValues.Center, LeftMargin = 285750, Indent = -285750 },
                         new Drawing.Run(
@@ -255,16 +263,16 @@ namespace ppt_lib
             /// </a:solidFill>
             /// 
 
-            
+
             // Specify the required shape properties for the body shape.
             bodyShape.NonVisualShapeProperties = new NonVisualShapeProperties(new NonVisualDrawingProperties() { Id = processSlidesAdd.drawingObjectId2, Name = "Content Placeholder" },
                     new NonVisualShapeDrawingProperties(new Drawing.ShapeLocks() { NoGrouping = true }),
                     new ApplicationNonVisualDrawingProperties(new PlaceholderShape() { Index = 1 }));
             bodyShape.ShapeProperties = new ShapeProperties(
-                new Drawing.PresetGeometry(new Drawing.AdjustValueList()) { Preset=Drawing.ShapeTypeValues.Rectangle}
+                new Drawing.PresetGeometry(new Drawing.AdjustValueList()) { Preset = Drawing.ShapeTypeValues.Rectangle }
                 ,
-                new Drawing.SolidFill(new DocumentFormat.OpenXml.Drawing.SchemeColor(new Drawing.LuminanceModulation(){Val= 65000 }) { Val=Drawing.SchemeColorValues.Background1} )
-               
+                new Drawing.SolidFill(new DocumentFormat.OpenXml.Drawing.SchemeColor(new Drawing.LuminanceModulation() { Val = 65000 }) { Val = Drawing.SchemeColorValues.Background1 })
+
 
                 )
             {
@@ -278,7 +286,7 @@ namespace ppt_lib
 
 
             // Specify the text of the title shape.
-            bodyShape.TextBody = new TextBody(new Drawing.BodyProperties() { Wrap=Drawing.TextWrappingValues.Square},
+            bodyShape.TextBody = new TextBody(new Drawing.BodyProperties() { Wrap = Drawing.TextWrappingValues.Square },
                     new Drawing.ListStyle(),
                     new Drawing.Paragraph(
                         new Drawing.ParagraphProperties() { Alignment = Drawing.TextAlignmentTypeValues.Left },
@@ -292,6 +300,7 @@ namespace ppt_lib
 
         }
 
+       
         public static Shape BlockQuoteShape(int y, HtmlNode htmlNode)
         {
 
@@ -326,8 +335,8 @@ namespace ppt_lib
 
             bodyShape.ShapeProperties = new ShapeProperties(
                 new Drawing.PresetGeometry(new Drawing.AdjustValueList()) { Preset = Drawing.ShapeTypeValues.Rectangle }
-               /* ,
-                new Drawing.SolidFill(new DocumentFormat.OpenXml.Drawing.SchemeColor(new Drawing.LuminanceModulation() { Val = 65000 }) { Val = Drawing.SchemeColorValues.Background1 })*/
+                /* ,
+                 new Drawing.SolidFill(new DocumentFormat.OpenXml.Drawing.SchemeColor(new Drawing.LuminanceModulation() { Val = 65000 }) { Val = Drawing.SchemeColorValues.Background1 })*/
                 )
             {
 
@@ -343,7 +352,7 @@ namespace ppt_lib
             bodyShape.TextBody = new TextBody(new Drawing.BodyProperties(new Drawing.ShapeAutoFit()) { Wrap = Drawing.TextWrappingValues.Square, RightToLeftColumns = false },
                     new Drawing.ListStyle(),
                     new Drawing.Paragraph(
-                        new Drawing.ParagraphProperties() {Level=1 },
+                        new Drawing.ParagraphProperties() { Level = 1 },
                         new Drawing.Run(
                          new Drawing.RunProperties() { Language = "en-US", Dirty = false, SpellingError = false, FontSize = 1800 },
                         new Drawing.Text() { Text = htmlNode.InnerText })
@@ -354,6 +363,96 @@ namespace ppt_lib
 
             return bodyShape;
 
+        }
+
+        public static void TextBodyProcess(TextBody textBody, HtmlNode htmlNode)
+        {
+            
+            Drawing.Paragraph para = new Drawing.Paragraph(new Drawing.ParagraphProperties() { Alignment = Drawing.TextAlignmentTypeValues.Center });
+            
+            //"Love<strong>is</strong>bold but don't go to far\nthe ice cream man appear on a van\nwith <em>all</em> flavors\nto try"
+            foreach (var htmlNodeChild in htmlNode.ChildNodes)
+            {
+                
+                //Until finds \n 
+                // '#text' "strong" "em"
+                if (htmlNodeChild.Name == "#text")
+                {
+                    //split n 
+                    //create a Run for each one of the elements
+                    if (htmlNodeChild.InnerText.Contains("\n"))
+                    {
+                        string[] text = htmlNodeChild.InnerText.Split('\n');
+                        int i = 0;
+                        foreach (string lines in text)
+                        {
+                            
+                            // \n happens
+                            
+                            if (i ==text.Length-2)
+                            {
+                                para.AppendChild(
+                                new Drawing.Run(
+                                new Drawing.RunProperties() { Language = "en-US", Dirty = false, SpellingError = false, FontSize = 1800 },
+                                new Drawing.Text() { Text = lines })
+                                );
+                                // textBody.AppendChild(para);
+
+                            }
+                            else
+                            {
+                                para.AppendChild(
+                                new Drawing.Run(
+                                new Drawing.RunProperties() { Language = "en-US", Dirty = false, SpellingError = false, FontSize = 1800 },
+                                new Drawing.Text() { Text = lines })
+                                );
+                                textBody.AppendChild(para);
+
+                                para = new Drawing.Paragraph(new Drawing.ParagraphProperties() { Alignment = Drawing.TextAlignmentTypeValues.Center });
+
+                            }
+                            i++;
+                        }
+
+                    }
+                    else
+                    {
+                        para.AppendChild(
+                                new Drawing.Run(
+                                new Drawing.RunProperties() { Language = "en-US", Dirty = false, SpellingError = false, FontSize = 1800 },
+                                new Drawing.Text() { Text = htmlNodeChild.InnerText })
+                                );
+                    
+                    }
+
+                } 
+                else if(htmlNodeChild.Name == "strong") 
+                {
+                    para.AppendChild(
+                                new Drawing.Run(
+                                new Drawing.RunProperties() { Language = "en-US", Dirty = false, Bold=true, FontSize = 1800 },
+                                new Drawing.Text() { Text = htmlNodeChild.InnerText })
+                                );
+                }
+                else if (htmlNodeChild.Name == "em") {
+                    para.AppendChild(
+                                    new Drawing.Run(
+                                    new Drawing.RunProperties() { Language = "en-US", Dirty = false, Italic= true, FontSize = 1800 },
+                                    new Drawing.Text() { Text = htmlNodeChild.InnerText })
+                                    );
+                }
+
+                //textBody.AppendChild(para);
+                //para = new Drawing.Paragraph(new Drawing.ParagraphProperties() { Alignment = Drawing.TextAlignmentTypeValues.Center });
+
+            }
+
+           /* textBody.AppendChild(new Drawing.Paragraph(
+                        new Drawing.ParagraphProperties() { Alignment = Drawing.TextAlignmentTypeValues.Center },
+                        new Drawing.Run(
+                         new Drawing.RunProperties() { Language = "en-US", Dirty = false, SpellingError = false, FontSize = 1800 },
+                        new Drawing.Text() { Text = htmlNode.InnerText })
+                                        ));*/
         }
     }
 }
