@@ -28,8 +28,8 @@ namespace ppt_lib
             titleShape.ShapeProperties = new ShapeProperties()
             {
                 Transform2D = new Drawing.Transform2D(
-                                         // new Drawing.Offset() { X = 0, Y = 2900000 },
-                                         new Drawing.Offset() { X = 0, Y = y },
+                                          new Drawing.Offset() { X = 0, Y = 2900000 },
+                                         //new Drawing.Offset() { X = 0, Y = y },
                                          new Drawing.Extents() { Cx = 9144000, Cy = 557200 }
                                          )
             };
@@ -57,14 +57,17 @@ namespace ppt_lib
 
             // Specify the text of the title shape.
             titleShape.TextBody = new TextBody(new Drawing.BodyProperties(),
-                    new Drawing.ListStyle(),
-                    new Drawing.Paragraph(
-                        new Drawing.ParagraphProperties() { Alignment = Drawing.TextAlignmentTypeValues.Center },
-                        new Drawing.Run(
-                         new Drawing.RunProperties() { Language = "en-US", Dirty = false, SpellingError = false, FontSize = fontSize() },
-                        new Drawing.Text() { Text = htmlNode.InnerText })
-                                        )
+                    new Drawing.ListStyle()
+                    /* ,new Drawing.Paragraph(
+                         new Drawing.ParagraphProperties() { Alignment = Drawing.TextAlignmentTypeValues.Center },
+                         new Drawing.Run(
+                          new Drawing.RunProperties() { Language = "en-US", Dirty = false, SpellingError = false, FontSize = fontSize() },
+                         new Drawing.Text() { Text = htmlNode.InnerText })
+                                         )*/
                     );
+
+
+            TextBodyProcess(titleShape.TextBody, htmlNode, fontSize());
             return titleShape;
         }
         public static Shape TextShape(int y, HtmlNode htmlNode)
@@ -101,7 +104,7 @@ namespace ppt_lib
                                         )*/
 
                     );
-            TextBodyProcess(bodyShape.TextBody,htmlNode);
+            TextBodyProcess(bodyShape.TextBody,htmlNode, 1800);
 
 
             return bodyShape;
@@ -365,7 +368,7 @@ namespace ppt_lib
 
         }
 
-        public static void TextBodyProcess(TextBody textBody, HtmlNode htmlNode)
+        public static void TextBodyProcess(TextBody textBody, HtmlNode htmlNode,int FontSize)
         {
             
             Drawing.Paragraph para = new Drawing.Paragraph(new Drawing.ParagraphProperties() { Alignment = Drawing.TextAlignmentTypeValues.Center });
@@ -393,67 +396,82 @@ namespace ppt_lib
                             {
                                 para.AppendChild(
                                 new Drawing.Run(
-                                new Drawing.RunProperties() { Language = "en-US", Dirty = false, SpellingError = false, FontSize = 1800 },
+                                new Drawing.RunProperties() { Language = "en-US", Dirty = false, SpellingError = false, FontSize = FontSize },
                                 new Drawing.Text() { Text = lines })
                                 );
-                                // textBody.AppendChild(para);
 
                             }
                             else
                             {
                                 para.AppendChild(
                                 new Drawing.Run(
-                                new Drawing.RunProperties() { Language = "en-US", Dirty = false, SpellingError = false, FontSize = 1800 },
+                                new Drawing.RunProperties() { Language = "en-US", Dirty = false, SpellingError = false, FontSize = FontSize },
                                 new Drawing.Text() { Text = lines })
                                 );
                                 
                                 textBody.AppendChild(para);
-
                                 para = new Drawing.Paragraph(new Drawing.ParagraphProperties() { Alignment = Drawing.TextAlignmentTypeValues.Center });
 
                             }
                             i++;
-                        }
+                        }//here ends loop
 
                     }
                     else
                     {
                         para.AppendChild(
                                 new Drawing.Run(
-                                new Drawing.RunProperties() { Language = "en-US", Dirty = false, SpellingError = false, FontSize = 1800 },
+                                new Drawing.RunProperties() { Language = "en-US", Dirty = false, SpellingError = false, FontSize = FontSize },
                                 new Drawing.Text() { Text = htmlNodeChild.InnerText })
                                 );
                     
                     }
 
-                } 
+                }
+                else if (htmlNodeChild.Name == "code")
+                {
+                    para.AppendChild(
+                                new Drawing.Run(
+                                new Drawing.RunProperties(
+                                    new Drawing.Highlight(new Drawing.RgbColorModelHex() { Val= "C0C0C0" })
+                                    ) { Language = "en-US", Dirty = false, Bold = true, FontSize = FontSize },
+                                new Drawing.Text() { Text = htmlNodeChild.InnerText })
+                                );
+                }
                 else if(htmlNodeChild.Name == "strong") 
                 {
                     para.AppendChild(
                                 new Drawing.Run(
-                                new Drawing.RunProperties() { Language = "en-US", Dirty = false, Bold=true, FontSize = 1800 },
+                                new Drawing.RunProperties() { Language = "en-US", Dirty = false, Bold=true, FontSize = FontSize },
                                 new Drawing.Text() { Text = htmlNodeChild.InnerText })
                                 );
                 }
                 else if (htmlNodeChild.Name == "em") {
-                    para.AppendChild(
+                    
+                    if (htmlNodeChild.FirstChild.Name== "strong")
+                    {
+                        para.AppendChild(
                                     new Drawing.Run(
-                                    new Drawing.RunProperties() { Language = "en-US", Dirty = false, Italic= true, FontSize = 1800 },
+                                    new Drawing.RunProperties() { Language = "en-US", Dirty = false, Bold = true, Italic = true, FontSize = FontSize },
                                     new Drawing.Text() { Text = htmlNodeChild.InnerText })
                                     );
+                    }
+                    else
+                    {
+                        para.AppendChild(
+                                    new Drawing.Run(
+                                    new Drawing.RunProperties() { Language = "en-US", Dirty = false, Italic = true, FontSize = FontSize },
+                                    new Drawing.Text() { Text = htmlNodeChild.InnerText })
+                                    );
+                    }
+                    
                 }
 
-                //textBody.AppendChild(para);
-                //para = new Drawing.Paragraph(new Drawing.ParagraphProperties() { Alignment = Drawing.TextAlignmentTypeValues.Center });
+               
+            }//here ends loop
 
-            }
             textBody.AppendChild(para);
-            /* textBody.AppendChild(new Drawing.Paragraph(
-                         new Drawing.ParagraphProperties() { Alignment = Drawing.TextAlignmentTypeValues.Center },
-                         new Drawing.Run(
-                          new Drawing.RunProperties() { Language = "en-US", Dirty = false, SpellingError = false, FontSize = 1800 },
-                         new Drawing.Text() { Text = htmlNode.InnerText })
-                                         ));*/
+         
         }
     }
 }
