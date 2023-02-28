@@ -389,7 +389,7 @@ namespace ppt_lib
                             
                             // \n happens
                             
-                            if (i ==text.Length-2)
+                            if (i ==text.Length-1)
                             {
                                 para.AppendChild(
                                 new Drawing.Run(
@@ -406,6 +406,7 @@ namespace ppt_lib
                                 new Drawing.RunProperties() { Language = "en-US", Dirty = false, SpellingError = false, FontSize = 1800 },
                                 new Drawing.Text() { Text = lines })
                                 );
+                                
                                 textBody.AppendChild(para);
 
                                 para = new Drawing.Paragraph(new Drawing.ParagraphProperties() { Alignment = Drawing.TextAlignmentTypeValues.Center });
@@ -446,13 +447,13 @@ namespace ppt_lib
                 //para = new Drawing.Paragraph(new Drawing.ParagraphProperties() { Alignment = Drawing.TextAlignmentTypeValues.Center });
 
             }
-
-           /* textBody.AppendChild(new Drawing.Paragraph(
-                        new Drawing.ParagraphProperties() { Alignment = Drawing.TextAlignmentTypeValues.Center },
-                        new Drawing.Run(
-                         new Drawing.RunProperties() { Language = "en-US", Dirty = false, SpellingError = false, FontSize = 1800 },
-                        new Drawing.Text() { Text = htmlNode.InnerText })
-                                        ));*/
+            textBody.AppendChild(para);
+            /* textBody.AppendChild(new Drawing.Paragraph(
+                         new Drawing.ParagraphProperties() { Alignment = Drawing.TextAlignmentTypeValues.Center },
+                         new Drawing.Run(
+                          new Drawing.RunProperties() { Language = "en-US", Dirty = false, SpellingError = false, FontSize = 1800 },
+                         new Drawing.Text() { Text = htmlNode.InnerText })
+                                         ));*/
         }
     }
 }
