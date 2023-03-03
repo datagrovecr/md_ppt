@@ -1,6 +1,7 @@
-## **t**itle
+My favorite search engine is [Duck Duck Go](https://duckduckgo.com "The best search engine for privacy").
 
-Love **is** bold but ***don't*** go to far
-the ice cream man `nano` appear on a van
-with *all* flavors
-to try
+<https://www.markdownguide.org>
+
+- [AngularJS] - HTML enhanced for web apps!
+
+  [AngularJS]: <http://angularjs.org>

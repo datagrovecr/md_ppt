@@ -6,25 +6,35 @@ using DocumentFormat.OpenXml.Presentation;
 using DocumentFormat.OpenXml.Packaging;
 using Drawing = DocumentFormat.OpenXml.Drawing;
 using HtmlAgilityPack;
+using System.Xml;
+using DocumentFormat.OpenXml.ExtendedProperties;
+using System.Runtime.Serialization;
+
 namespace ppt_lib
 {
     internal class processSlidesAdd
     {
         public static uint drawingObjectId2 = 2;
         public static int y = 1000000;
+        public static int HyperlinkCount = 1;
+        public static PresentationDocument presentationDocument=null;
+        public static List<HyperLInkElement> hyperlinkList = new();
         // Insert a slide into the specified presentation.
-        public static void ProcessHtmlToPresentation(PresentationDocument presentationDocument, HtmlDocument htmlDoc)
+        public static void ProcessHtmlToPresentation(PresentationDocument presentationDocumentF, HtmlDocument htmlDoc)
         {
-            
+            presentationDocument = presentationDocumentF;
             List<List<Shape>> listOfShapes=new();
             List<Shape> shapes = new();
             int i = 1;
-            
+
             //InsertNewSlide(presentationDocument, 1, htmlDoc);
             //CREATE ALL SHAPES AND THEN DECIDE TO ADD IT TO INSERT SLIDE
             //HANDLE THE POSITION HERE
             //SET THEIR POSITION BY DEFAULT AND LATER ACCESS  ShapeProperties
             //OR USE A FOR LOOP TO ADJUST     Y=VALUE
+            // find all the url insert them on the presentation document
+            //get the in order later
+            //htmlDoc.DocumentNode.ChildNodes.Descendants<>
             foreach (var htmlNode in htmlDoc.DocumentNode.ChildNodes)
             {
 
@@ -32,6 +42,10 @@ namespace ppt_lib
                 {
                     listOfShapes.Add(shapes);
                     shapes = new();
+                }
+                if (true)
+                {
+
                 }
                 if (htmlNode.Name == "h1" || htmlNode.Name == "h2" || htmlNode.Name == "h3" || htmlNode.Name == "h3")
                 {
@@ -48,6 +62,7 @@ namespace ppt_lib
                 }
                 else if (htmlNode.Name == "p")
                 {
+                    
                     shapes.Add(shapeList.TextShape(y, htmlNode));
                     y += 1000000;
                 }
@@ -89,7 +104,7 @@ namespace ppt_lib
                 }
                 
                
-            }
+            }//HERE ENDS LOOP
             if (shapes.Count > 0)  listOfShapes.Add(shapes);
 
             //HERE LOOP YOUR LIST OF LIST'S
@@ -98,8 +113,20 @@ namespace ppt_lib
                 InsertNewSlideBaby(presentationDocument, i, shapes1);
                 i++;
             }
-            
         }
+
+        public static HyperLInkElement UrlProcess(string linkUrl)
+        {
+            HyperlinkCount++;
+            HyperLInkElement CURRENT = new HyperLInkElement(new Uri(linkUrl, UriKind.Absolute),
+            "rId" +new ObjectIDGenerator().GetHashCode());
+            
+            //save it on the list
+            hyperlinkList.Add(CURRENT);
+            return CURRENT;
+           
+        }
+
 
         public static void InsertNewSlideBaby(PresentationDocument presentationDocument, int position, List<Shape> shapes3)
         {
@@ -156,6 +183,11 @@ namespace ppt_lib
             // Create the slide part for the new slide.
             SlidePart slidePart = presentationPart.AddNewPart<SlidePart>();
 
+            //hyperlinkList
+            foreach (HyperLInkElement helement in hyperlinkList)
+            {
+                slidePart.AddHyperlinkRelationship(helement.url,true, helement.id);
+            }
             // Save the new slide part.
             slide.Save(slidePart);
 

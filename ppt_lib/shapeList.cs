@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml.ExtendedProperties;
+using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Presentation;
 using DocumentFormat.OpenXml.Wordprocessing;
 using HtmlAgilityPack;
@@ -117,6 +118,7 @@ namespace ppt_lib
             //set the font size 
             // Declare and instantiate the body shape of the new slide.
             Shape listShape = new Shape();
+            Drawing.Paragraph para = new Drawing.Paragraph(new Drawing.ParagraphProperties() { Alignment = Drawing.TextAlignmentTypeValues.Center });
 
             // Specify the required shape properties for the body shape.
             listShape.NonVisualShapeProperties = new NonVisualShapeProperties(new NonVisualDrawingProperties() { Id = processSlidesAdd.drawingObjectId2, Name = "Content Placeholder" },
@@ -146,16 +148,53 @@ namespace ppt_lib
             {
                 if (index == lastNode && list.Name == "li")
                 {
-                    textList += list.InnerText;
-                    processSlidesAdd.y += 600000;
+                    /*if (list.HasChildNodes)
+                    {
+                        foreach (var liItem in list.ChildNodes)
+                        {
+                            if (liItem.Name == "a")
+                            {
+                                string href = liItem.Attributes["href"].Value;
+                                string text = liItem.InnerText;
+                                HyperLInkElement hyperlink = processSlidesAdd.UrlProcess(href);
+                                string tooltip = liItem.Attributes["title"]?.Value != null ? liItem.Attributes["title"]?.Value : "";
+
+                           
+                                para.AppendChild(
+                                            new Drawing.Run(
+                                            new Drawing.RunProperties(
+                                                new Drawing.SolidFill(
+                                                    new Drawing.RgbColorModelHex() { Val = "A0AABF" }
+                                                    ),
+                                                new Drawing.EffectList()
+                                                , new Drawing.HyperlinkOnClick() { Id = hyperlink.id, Tooltip = tooltip }
+                                                )
+                                            { Language = "en-US", Dirty = false, Bold = true, FontSize = 18000},
+                                            new Drawing.Text() { Text = liItem.InnerText })
+                                            );
+                            }
+                        }
+                    }
+                    else
+                    {*/
+                        textList += list.InnerText;
+                        processSlidesAdd.y += 600000;
+
+                    //}
+                    
                 }
                 else if (list.Name == "li")
                 {
+                    //procesar 
+
                     textList += list.InnerText + "\n";
                     processSlidesAdd.y += 300000;
+
+
                 }
                 index++;
             }
+
 
             // Specify the text of the title shape.
             listShape.TextBody = new TextBody(new Drawing.BodyProperties(),
@@ -446,6 +485,38 @@ namespace ppt_lib
                                 new Drawing.Text() { Text = htmlNodeChild.InnerText })
                                 );
                 }
+                else if (htmlNodeChild.Name == "a")
+                {
+                    //href
+                    string href = htmlNodeChild.Attributes["href"].Value;
+                    string text = htmlNodeChild.InnerText;
+                    HyperLInkElement hyperlink =processSlidesAdd.UrlProcess(href);
+                    //here add the link 
+                    //Name: "title", Value: "The best search engine for privacy"
+                    string tooltip = htmlNodeChild.Attributes["title"]?.Value!=null ? htmlNodeChild.Attributes["title"]?.Value: "" ;
+
+                    /*
+                      <a:rPr lang="en-US" b="0" i="0" u="sng" dirty="0">
+                                <a:solidFill>
+                                    <a:srgbClr val="A0AABF"/>
+                                </a:solidFill>
+                                <a:effectLst/>
+                                <a:latin typeface="Georgia" panose="02040502050405020303" pitchFamily="18" charset="0"/>
+                                <a:hlinkClick r:id="rId2" tooltip="The best search engine for privacy"/>
+                            </a:rPr>
+                     */
+                    para.AppendChild(
+                                new Drawing.Run(
+                                new Drawing.RunProperties(
+                                    new Drawing.SolidFill( 
+                                        new Drawing.RgbColorModelHex() { Val= "A0AABF" }
+                                        ),
+                                    new Drawing.EffectList() 
+                                    ,new Drawing.HyperlinkOnClick() { Id= hyperlink.id, Tooltip= tooltip}
+                                    ) { Language = "en-US", Dirty = false, Bold = true, FontSize = FontSize },
+                                new Drawing.Text() { Text = htmlNodeChild.InnerText })
+                                );
+                }
                 else if (htmlNodeChild.Name == "em") {
                     
                     if (htmlNodeChild.FirstChild.Name== "strong")
@@ -473,5 +544,7 @@ namespace ppt_lib
             textBody.AppendChild(para);
          
         }
+    
+      
     }
 }
