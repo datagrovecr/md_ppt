@@ -36,9 +36,8 @@ namespace Ppt_lib
 
                 CreatePresentationDocument.CreatePresentationParts(presentationPart);
                 processSlidesAdd.ProcessHtmlToPresentation(presentationDocument,htmlDoc);
-                /*processSlidesAdd.InsertNewSlide2(presentationDocument, 1, "AAAAAAAAAAAAAAAAAAAAAAAAAAA 1");
-                processSlidesAdd.InsertNewSlide2(presentationDocument, 2, "AAAAAAAAAAAAAAAAAAAAAAAAAAA 2");
-                */
+            
+
                 presentationDocument.Save();
                 
                 //Close the presentation handle

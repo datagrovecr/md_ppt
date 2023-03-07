@@ -72,7 +72,7 @@ namespace ppt_lib
                                         new ParagraphProperties() { Alignment = new EnumValue<TextAlignmentTypeValues> { Value = TextAlignmentTypeValues.Center } },
                                     new Run(
                                          new D.RunProperties() { Language = "en-US", Dirty = false, SpellingError = false, FontSize = 2200 },
-                                      new D.Text() { Text = "Presentacion " }),
+                                      new D.Text() { Text = "Presentation" }),
                                         new EndParagraphRunProperties() { Language = "en-US" })
                                     )))),
                     new ColorMapOverride(new MasterColorMapping()));

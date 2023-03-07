@@ -19,13 +19,28 @@ namespace ppt_lib
         public static int HyperlinkCount = 1;
         public static PresentationDocument presentationDocument=null;
         public static List<HyperLInkElement> hyperlinkList = new();
+        public static List<List<Shape>> listOfShapes = new();
+        
         // Insert a slide into the specified presentation.
         public static void ProcessHtmlToPresentation(PresentationDocument presentationDocumentF, HtmlDocument htmlDoc)
         {
             presentationDocument = presentationDocumentF;
-            List<List<Shape>> listOfShapes=new();
             List<Shape> shapes = new();
+            processFragment(htmlDoc.DocumentNode,shapes);
             int i = 1;
+
+            //HERE LOOP YOUR LIST OF LIST'S
+            foreach (var shapeElements in listOfShapes)
+            {
+                InsertNewSlideBaby(presentationDocument, i, shapeElements);
+                i++;
+            }//HERE ENDS LOOP
+        }
+        
+        public static void processFragment(HtmlNode htmlNodeDoc, List<Shape> shapes)
+        {
+          
+            
 
             //InsertNewSlide(presentationDocument, 1, htmlDoc);
             //CREATE ALL SHAPES AND THEN DECIDE TO ADD IT TO INSERT SLIDE
@@ -35,84 +50,227 @@ namespace ppt_lib
             // find all the url insert them on the presentation document
             //get the in order later
             //htmlDoc.DocumentNode.ChildNodes.Descendants<>
-            foreach (var htmlNode in htmlDoc.DocumentNode.ChildNodes)
+
+
+            if (htmlNodeDoc.HasChildNodes==false)
+            {
+                ProcessLine(htmlNodeDoc, shapes);
+            }
+            else
+            {
+                //go for A
+                ProcessLine(htmlNodeDoc, shapes);
+                foreach (var htmlNode in htmlNodeDoc.ChildNodes)
+                {
+
+                    ProcessLine(htmlNode,shapes);
+
+
+                }//HERE ENDS LOOP
+            }
+           
+
+            if (shapes.Count > 0)  listOfShapes.Add(shapes);
+
+
+            
+        }
+
+        public static OpenXmlElement ProcessLine(HtmlNode htmlNode, List<Shape> shapes)
+        {
+
+            if (y >= 5000000)
+            {
+                listOfShapes.Add(shapes);
+                shapes = new();
+            }
+
+            // var result = processFragment(htmlNode);
+            if (htmlNode.Name == "#text")
             {
 
-                if (y >= 5000000)
-                {
-                    listOfShapes.Add(shapes);
-                    shapes = new();
-                }
-                if (true)
-                {
+                TextBody S = new TextBody(new Drawing.BodyProperties(),
+                        new Drawing.ListStyle()
+                        );
 
-                }
-                if (htmlNode.Name == "h1" || htmlNode.Name == "h2" || htmlNode.Name == "h3" || htmlNode.Name == "h3")
+                Drawing.Paragraph para = new Drawing.Paragraph(new Drawing.ParagraphProperties() { Alignment = Drawing.TextAlignmentTypeValues.Center });
+                int FontSize = 18000;
+                //split n 
+                //create a Run for each one of the elements
+                if (htmlNode.InnerText.Contains("\n"))
                 {
-                    // Declare and instantiate the title shape of the new slide.
-                    shapes.Add(shapeList.TitleShape(y, htmlNode));
-                    
-                    listOfShapes.Add(shapes);
-                    shapes = new();
-
-
-                    drawingObjectId2++;
-                    y = 1000000;
-
-                }
-                else if (htmlNode.Name == "p")
-                {
-                    
-                    shapes.Add(shapeList.TextShape(y, htmlNode));
-                    y += 1000000;
-                }
-                else if (htmlNode.Name == "ul")
-                {
-                    shapes.Add(shapeList.BulletListShape(y, htmlNode));
-                    //y += 1000000;
-                }
-                else if (htmlNode.Name == "ol")
-                {
-                    shapes.Add(shapeList.OrderedListShape(y, htmlNode));
-                    //y += 1000000;
-                }
-                else if (htmlNode.Name == "pre")
-                {
-                    foreach (var htmlNodeSon in htmlNode.ChildNodes)
-                     {
-                        if (htmlNodeSon.Name=="code")
-                        {
-                            shapes.Add(shapeList.codeblockShape(y, htmlNode));
-                            y += 1000000;
-
-                        }
-                    }
-                   /* if (htmlNode.Descendants<c>)
+                    string[] text = htmlNode.InnerText.Split('\n');
+                    int i = 0;
+                    foreach (string lines in text)
                     {
 
-                    }*/
-                }
-                else if (htmlNode.Name =="blockquote")
-                {
-                    shapes.Add(shapeList.BlockQuoteShape(y, htmlNode));
-                    y += 1000000;
+                        // \n happens
+
+                        if (i == text.Length - 1)
+                        {
+                            para.AppendChild(
+                            new Drawing.Run(
+                            new Drawing.RunProperties() { Language = "en-US", Dirty = false, SpellingError = false, FontSize = FontSize },
+                            new Drawing.Text() { Text = lines })
+                            );
+
+                        }
+                        else
+                        {
+                            para.AppendChild(
+                            new Drawing.Run(
+                            new Drawing.RunProperties() { Language = "en-US", Dirty = false, SpellingError = false, FontSize = FontSize },
+                            new Drawing.Text() { Text = lines })
+                            );
+                            S.AppendChild(para);
+
+                            para = new Drawing.Paragraph(new Drawing.ParagraphProperties() { Alignment = Drawing.TextAlignmentTypeValues.Center });
+
+                        }
+                        i++;
+                    }//here ends loop
+
                 }
                 else
                 {
-                    //everithing else
-
+                    para.AppendChild(
+                           new Drawing.Run(
+                           new Drawing.RunProperties() { Language = "en-US", Dirty = false, SpellingError = false, FontSize = FontSize },
+                           new Drawing.Text() { Text = htmlNode.InnerText })
+                           );
+                    S.AppendChild(para);
                 }
-                
-               
-            }//HERE ENDS LOOP
-            if (shapes.Count > 0)  listOfShapes.Add(shapes);
+                return S;
 
-            //HERE LOOP YOUR LIST OF LIST'S
-            foreach (var shapes1 in listOfShapes)
-            {
-                InsertNewSlideBaby(presentationDocument, i, shapes1);
-                i++;
             }
+            else if (htmlNode.Name == "h1" || htmlNode.Name == "h2" || htmlNode.Name == "h3" || htmlNode.Name == "h4")
+            {
+                // Declare and instantiate the title shape of the new slide.
+                //shapes.Add(shapeList.TitleShape(y, htmlNode));
+
+                listOfShapes.Add(shapes);
+                shapes = new();
+
+
+                drawingObjectId2++;
+                y = 1000000;
+
+            }
+
+            //
+            else if (htmlNode.Name == "p")
+            {
+
+                //CALL #TEXT
+                //set the font size 
+                // Declare and instantiate the body shape of the new slide.
+                Shape bodyShape = new Shape();
+
+                // Specify the required shape properties for the body shape.
+                bodyShape.NonVisualShapeProperties = new NonVisualShapeProperties(new NonVisualDrawingProperties() { Id = processSlidesAdd.drawingObjectId2, Name = "Content Placeholder" },
+                        new NonVisualShapeDrawingProperties(new Drawing.ShapeLocks() { NoGrouping = true }),
+                        new ApplicationNonVisualDrawingProperties(new PlaceholderShape() { Index = 1 }));
+                bodyShape.ShapeProperties = new ShapeProperties()
+                {
+                    Transform2D = new Drawing.Transform2D(
+                                             new Drawing.Offset() { X = 0, Y = y },
+                                             new Drawing.Extents() { Cx = 9144000, Cy = 457200 }
+                                             )
+                };
+
+                Drawing.Paragraph Slide = new Drawing.Paragraph();
+
+
+
+                // Specify the text of the title shape.
+                bodyShape.TextBody = new TextBody(new Drawing.BodyProperties(),
+                        new Drawing.ListStyle()
+
+                        );
+
+                foreach (var htmlNodeBaby in htmlNode.ChildNodes)
+                {
+                    bodyShape.TextBody.AppendChild(ProcessLine(htmlNodeBaby,shapes));
+                }
+
+                //listOfShapes.AddRange(result);
+                //shapes.Add(shapeList.TextShape(y, htmlNode));
+                y += 1000000;
+                shapes.Add(bodyShape);
+                return null;
+            }
+            else if (htmlNode.Name == "ul")
+            {
+                //shapes.Add(shapeList.BulletListShape(y, htmlNode));
+
+                //y += 1000000;
+            }
+            else if (htmlNode.Name == "ol")
+            {
+                //shapes.Add(shapeList.OrderedListShape(y, htmlNode));
+
+                //y += 1000000;
+            }
+            else if (htmlNode.Name == "a")
+            {
+                Drawing.Paragraph para = new Drawing.Paragraph(new Drawing.ParagraphProperties() { Alignment = Drawing.TextAlignmentTypeValues.Center });
+                int FontSize = 18000;
+                string href = htmlNode.Attributes["href"].Value;
+                string text = htmlNode.InnerText;
+                HyperLInkElement hyperlink = processSlidesAdd.UrlProcess(href);
+                //here add the link 
+                //Name: "title", Value: "The best search engine for privacy"
+                string tooltip = htmlNode.Attributes["title"]?.Value != null ? htmlNode.Attributes["title"]?.Value : "";
+
+                /*
+                  <a:rPr lang="en-US" b="0" i="0" u="sng" dirty="0">
+                            <a:solidFill>
+                                <a:srgbClr val="A0AABF"/>
+                            </a:solidFill>
+                            <a:effectLst/>
+                            <a:latin typeface="Georgia" panose="02040502050405020303" pitchFamily="18" charset="0"/>
+                            <a:hlinkClick r:id="rId2" tooltip="The best search engine for privacy"/>
+                        </a:rPr>
+                 */
+                para.AppendChild(
+                            new Drawing.Run(
+                            new Drawing.RunProperties(
+                                new Drawing.SolidFill(
+                                    new Drawing.RgbColorModelHex() { Val = "A0AABF" }
+                                    ),
+                                new Drawing.EffectList()
+                                , new Drawing.HyperlinkOnClick() { Id = hyperlink.id, Tooltip = tooltip }
+                                )
+                            { Language = "en-US", Dirty = false, Bold = true, FontSize = FontSize },
+                            new Drawing.Text() { Text = htmlNode.InnerText })
+                            );
+                return para;
+            }
+            else if (htmlNode.Name == "pre")
+            {
+                foreach (var htmlNodeSon in htmlNode.ChildNodes)
+                {
+                    if (htmlNodeSon.Name == "code")
+                    {
+                        // shapes.Add(shapeList.codeblockShape(y, htmlNode));
+                        y += 1000000;
+
+                    }
+                }
+
+            }
+            else if (htmlNode.Name == "blockquote")
+            {
+                //shapes.Add(shapeList.BlockQuoteShape(y, htmlNode));
+                y += 1000000;
+            }
+            else
+            {
+                //everithing else
+
+            }
+
+            return new Drawing.Break();
         }
 
         public static HyperLInkElement UrlProcess(string linkUrl)
@@ -491,7 +649,7 @@ namespace ppt_lib
                     prevSlideId = slideId;
                 }
 
-            }
+            }//HERE ENDS LOOP
 
             maxSlideId++;
 

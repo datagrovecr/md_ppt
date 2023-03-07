@@ -59,12 +59,6 @@ namespace ppt_lib
             // Specify the text of the title shape.
             titleShape.TextBody = new TextBody(new Drawing.BodyProperties(),
                     new Drawing.ListStyle()
-                    /* ,new Drawing.Paragraph(
-                         new Drawing.ParagraphProperties() { Alignment = Drawing.TextAlignmentTypeValues.Center },
-                         new Drawing.Run(
-                          new Drawing.RunProperties() { Language = "en-US", Dirty = false, SpellingError = false, FontSize = fontSize() },
-                         new Drawing.Text() { Text = htmlNode.InnerText })
-                                         )*/
                     );
 
 
@@ -96,14 +90,6 @@ namespace ppt_lib
             // Specify the text of the title shape.
             bodyShape.TextBody = new TextBody(new Drawing.BodyProperties(),
                     new Drawing.ListStyle()
-                    /*,
-                    new Drawing.Paragraph(
-                        new Drawing.ParagraphProperties() { Alignment = Drawing.TextAlignmentTypeValues.Center },
-                        new Drawing.Run(
-                         new Drawing.RunProperties() { Language = "en-US", Dirty = false, SpellingError = false, FontSize = 1800 },
-                        new Drawing.Text() { Text = htmlNode.InnerText })
-                                        )*/
-
                     );
             TextBodyProcess(bodyShape.TextBody,htmlNode, 1800);
 
